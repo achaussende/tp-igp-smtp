@@ -24,6 +24,7 @@ SMTPMessage.matches(SMTPMessage smtpMessage, String message)
 * 250 <domain> SMTP Server Ready  O
 * 221 <domain> Service closing transmission channel  O
 * 250 OK 
+* 250 <domain> O
 * 354 Start mail input 
 * 503 Bad sequence of commands 
 * 550 No such user 
