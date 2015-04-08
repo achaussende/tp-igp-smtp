@@ -2,6 +2,7 @@ package com.polytech4a.smtp.client.core;
 
 import com.polytech4a.smtp.client.core.State.State;
 import com.polytech4a.smtp.client.core.State.StateStarted;
+import com.polytech4a.smtp.messages.exceptions.MalformedEmailException;
 import org.apache.log4j.Logger;
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocket;
@@ -32,7 +33,11 @@ public class Connection {
 
     public Connection(InetAddress address, int port, Mail mailToSend) throws IOException {
         this.createConnection(address, port);
-        this.currentState = new StateStarted(mailToSend);
+        try {
+            this.currentState = new StateStarted(mailToSend);
+        } catch (MalformedEmailException e) {
+            logger.error("Cannot construct messages");
+        }
     }
 
     /**
