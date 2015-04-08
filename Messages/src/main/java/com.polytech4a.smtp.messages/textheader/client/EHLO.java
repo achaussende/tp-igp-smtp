@@ -24,14 +24,14 @@ public class EHLO extends TextHeaderMessage {
     public EHLO(String clientName) {
         super("EHLO");
         this.clientName = clientName;
-        construct();
+        this.construct();
     }
 
     public EHLO(Object message) throws MalformedMessageException {
         super("EHLO");
         if (matches((String) message)) {
             this.clientName = ((String) message).split(" ")[1];
-            construct();
+            this.construct();
         } else throw new MalformedMessageException(EHLO.class.getName(), regex);
     }
 

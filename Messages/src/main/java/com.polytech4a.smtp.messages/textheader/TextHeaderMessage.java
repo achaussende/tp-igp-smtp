@@ -1,7 +1,7 @@
-package com.polytech4a.smtp.messages.TextHeader;
+package com.polytech4a.smtp.messages.textheader;
 
-import com.polytech4a.smtp.messages.Exceptions.MalformedMessageException;
 import com.polytech4a.smtp.messages.Message;
+import com.polytech4a.smtp.messages.exceptions.MalformedMessageException;
 
 /**
  * Created by Antoine CARON on 01/04/2015.
@@ -12,7 +12,6 @@ import com.polytech4a.smtp.messages.Message;
  *          Abstract Text Headed Message for SMTP Protocol.
  */
 public abstract class TextHeaderMessage extends Message {
-
     /**
      * Regex of a NumHeaderMessage.
      */
@@ -29,19 +28,17 @@ public abstract class TextHeaderMessage extends Message {
      */
     public TextHeaderMessage(String header) {
         this.header = header;
-        construct();
     }
 
     /**
      * Constructor with a message to Parse.
      *
      * @param message message to Parse. (String)
-     * @throws com.polytech4a.smtp.messages.Exceptions.MalformedMessageException
+     * @throws com.polytech4a.smtp.messages.exceptions.MalformedMessageException
      */
     public TextHeaderMessage(Object message) throws MalformedMessageException {
         if (TextHeaderMessage.matches((String) message)) {
             this.header = ((String) message).split(" ")[0];
-            construct();
         } else throw new MalformedMessageException(TextHeaderMessage.class.getName(), regex);
     }
 
@@ -60,7 +57,7 @@ public abstract class TextHeaderMessage extends Message {
     }
 
     @Override
-    public void construct() {
+    protected void construct() {
         message.append(header);
         message.append(" ");
     }
