@@ -27,16 +27,12 @@ public class Connection {
 
     private State currentState;
 
-    private String user;
-    private String[] receivers;
-    private String mailToSend;
-
     public Connection() {
     }
 
-    public Connection(InetAddress address, int port) throws IOException {
+    public Connection(InetAddress address, int port, Mail mailToSend) throws IOException {
         this.createConnection(address, port);
-        this.currentState = new StateStarted();
+        this.currentState = new StateStarted(mailToSend);
     }
 
     /**
@@ -101,7 +97,7 @@ public class Connection {
             String message = null;
             try {
                 message = waitForResponse();
-                runConnection = currentState.analyze(message.toString()); //route the request to next state of the server
+                runConnection = currentState.analyze(message); //route the request to next state of the server
                 sendMessage();
                 updateState();
             } catch (IOException e) {

@@ -7,7 +7,7 @@ import java.net.InetAddress;
 /**
  * Created by Pierre on 01/04/2015.
  */
-public class Client {
+public class Client implements Runnable{
 
     private static Logger logger = Logger.getLogger(Main.class);
 
@@ -15,5 +15,7 @@ public class Client {
 
     }
 
+    public void run() {
 
+    }
 }
