@@ -1,4 +1,4 @@
-package com.polytech4a.smtp.messages.Exceptions;
+package com.polytech4a.smtp.messages.exceptions;
 
 /**
  * Created by Antoine CARON on 01/04/2015.

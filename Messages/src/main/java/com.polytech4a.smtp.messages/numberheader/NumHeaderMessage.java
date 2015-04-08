@@ -1,7 +1,7 @@
-package com.polytech4a.smtp.messages.NumberHeader;
+package com.polytech4a.smtp.messages.numberheader;
 
-import com.polytech4a.smtp.messages.Exceptions.MalformedMessageException;
 import com.polytech4a.smtp.messages.Message;
+import com.polytech4a.smtp.messages.exceptions.MalformedMessageException;
 
 /**
  * Created by Antoine CARON on 01/04/2015.
@@ -16,31 +16,38 @@ public abstract class NumHeaderMessage extends Message {
     /**
      * Regex of a NumHeaderMessage.
      */
-    private static String regex = "\\d{1,4} .*";
+    private static String regex = "^\\d{1,}+ |-.*?$";
     /**
      * Number contain in the Header of the message.
      */
     protected Integer number;
+
+    protected String numberSeparator;
 
     /**
      * Constructor with parameters.
      *
      * @param number Number in the Header.
      */
-    public NumHeaderMessage(Integer number) {
+    public NumHeaderMessage(Integer number, String numberSeparator) {
         this.number = number;
-        construct();
+        this.numberSeparator = numberSeparator;
     }
 
     /**
      * Constructor with a message to Parse.
      *
      * @param message message to Parse.
-     * @throws com.polytech4a.smtp.messages.Exceptions.MalformedMessageException
+     * @throws com.polytech4a.smtp.messages.exceptions.MalformedMessageException
      */
     public NumHeaderMessage(String message) throws MalformedMessageException {
         if (NumHeaderMessage.matches(message)) {
-            this.number = Integer.parseInt(message.split(" ")[0]);
+            this.number = Integer.parseInt(message.split(" |-")[0]);
+            if (message.matches("^\\d{1,} .*$")) {
+                numberSeparator = " ";
+            } else {
+                numberSeparator = "-";
+            }
             construct();
         } else throw new MalformedMessageException(NumHeaderMessage.class.getName(), regex);
     }
@@ -60,8 +67,8 @@ public abstract class NumHeaderMessage extends Message {
     }
 
     @Override
-    public void construct() {
+    protected void construct() {
         message.append(number);
-        message.append(" ");
+        message.append(numberSeparator);
     }
 }
