@@ -17,29 +17,27 @@ public enum SMTPMessage {
 
     private String message;
 
-    SMTPMessage(String s) {
+    SMTPMessage(String message) {
+        this.message = message;
     }
 
     /**
      * Static function to know if a message matches the structure.
      *
-     * @param smtpMessage type of SMTP Message to test.
+     * @param smtpMessage Message define for type of STMPMessage to Test.
      * @param message     message receive to test.
      * @return true/false
      */
     public static boolean matches(SMTPMessage smtpMessage, String message) {
-        StringBuffer sbf = new StringBuffer(smtpMessage.getMessage());
-        sbf.insert(0, "^");
+        StringBuffer sbf = new StringBuffer();
+        sbf.append("^");
+        sbf.append(smtpMessage.toString());
         sbf.append("$");
         return message.matches(sbf.toString());
     }
 
-    /**
-     * Get the real SMTP Message.
-     *
-     * @return real SMTP Message.
-     */
-    public String getMessage() {
+    @Override
+    public String toString() {
         return message;
     }
 }

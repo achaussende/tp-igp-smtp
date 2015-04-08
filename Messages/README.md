@@ -16,14 +16,15 @@ SMTPMessage.matches(SMTPMessage smtpMessage, String message)
 ```
 
 ###Client Messages:
-* EHLO <client> (Not tested) O
+* EHLO <client> O
 * QUIT (Not tested)
+* MAIL FROM:<adresse> O
 
 ###Server Messages:
-* 250 <domain> SMTP Server Ready (Not tested)  O
-* 221 <domain> Service closing transmission channel O
-* 250 OK (Not tested)
-* 354 Start mail input
-* 503 Bad sequence of commands (Not tested)
-* 550 No such user (Not tested)
+* 250 <domain> SMTP Server Ready  O
+* 221 <domain> Service closing transmission channel  O
+* 250 OK 
+* 354 Start mail input 
+* 503 Bad sequence of commands 
+* 550 No such user 
 

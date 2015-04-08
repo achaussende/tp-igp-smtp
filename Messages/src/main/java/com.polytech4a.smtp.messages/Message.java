@@ -17,7 +17,7 @@ public abstract class Message {
     /**
      * Construct the message.
      */
-    public abstract void construct();
+    protected abstract void construct();
 
     @Override
     public String toString() {
