@@ -9,10 +9,11 @@ import com.polytech4a.smtp.messages.textheader.client.MAILFROM;
  * Created by Pierre on 01/04/2015.
  */
 public class StateEhloConfirm extends State{
+    private String serverName;
 
-
-    public StateEhloConfirm(Mail mailToSend) throws MalformedEmailException {
+    public StateEhloConfirm(Mail mailToSend, String serverName) throws MalformedEmailException {
         super(mailToSend);
+        this.serverName = serverName;
         this.setNextState(new StateMail(mailToSend));
 
         this.setMsgToSend(new MAILFROM(mailToSend.getUser()).getHeader());
@@ -25,6 +26,7 @@ public class StateEhloConfirm extends State{
             return false;
         }
 
+        //TODO C'est un message ehloAnswer ici (comparer aussi les serverNames)
         return SMTPMessage.matches(SMTPMessage.OK, message);
     }
 }

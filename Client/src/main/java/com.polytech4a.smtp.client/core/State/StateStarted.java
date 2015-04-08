@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 
 import com.polytech4a.smtp.client.core.Mail;
 import com.polytech4a.smtp.messages.exceptions.MalformedEmailException;
+import com.polytech4a.smtp.messages.exceptions.MalformedMessageException;
 import com.polytech4a.smtp.messages.numberheader.server.ServerReady;
 import com.polytech4a.smtp.messages.textheader.client.EHLO;
 
@@ -14,7 +15,6 @@ import com.polytech4a.smtp.messages.textheader.client.EHLO;
 public class StateStarted extends State {
     public StateStarted(Mail mailToSend) throws MalformedEmailException {
         super(mailToSend);
-        this.setNextState(new StateEhloConfirm(mailToSend));
 
         String computerName;
         try {
@@ -27,11 +27,20 @@ public class StateStarted extends State {
 
     @Override
     public boolean analyze(String message) {
+        String serverName;
         if(message == null){
             incrementNbTry();
             return false;
         }
 
-        return ServerReady.matches(message);
+        try {
+            serverName = new ServerReady((Object)message).getServerName();
+            this.setNextState(new StateEhloConfirm(this.getMailToSend(), serverName));
+            return true;
+        } catch (MalformedEmailException e) {
+            return false;
+        } catch (MalformedMessageException e) {
+            return false;
+        }
     }
 }
