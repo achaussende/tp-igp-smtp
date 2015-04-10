@@ -2,6 +2,8 @@ package com.polytech4a.smtp.client.core.State;
 
 import com.polytech4a.smtp.client.core.Mail;
 import com.polytech4a.smtp.messages.SMTPMessage;
+import com.polytech4a.smtp.messages.exceptions.MalformedEmailException;
+import com.polytech4a.smtp.messages.textheader.client.RCPTTO;
 
 /**
  * Created by Pierre on 08/04/2015.
@@ -40,10 +42,13 @@ public class StateRcpt extends State {
                 //send error then go to quit state
             }
             else{
-                //send RCPT
-                this.setMsgToSend("");
-                indexReceivers++;
-                return true;
+                try {
+                    this.setMsgToSend(new RCPTTO(this.getMailToSend().getReceivers()[indexReceivers]).getHeader());
+                    indexReceivers++;
+                    return true;
+                } catch (MalformedEmailException e) {
+                    return false;
+                }
             }
         }
         return false;
