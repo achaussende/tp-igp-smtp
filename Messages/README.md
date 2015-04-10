@@ -21,7 +21,7 @@ SMTPMessage.matches(SMTPMessage smtpMessage, String message)
 * MAIL FROM:<adresse> O
 
 ###Server Messages:
-* 250 <domain> SMTP Server Ready  O
+* 220 <domain> SMTP Server Ready  O
 * 221 <domain> Service closing transmission channel  O
 * 250 OK 
 * 250 <domain> O

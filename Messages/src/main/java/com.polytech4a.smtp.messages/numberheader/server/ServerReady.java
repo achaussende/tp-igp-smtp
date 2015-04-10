@@ -16,7 +16,7 @@ public class ServerReady extends NumHeaderMessage {
     /**
      * Regex of ServerReady.
      */
-    private static String regex = "^250 \\S* SMTP Server Ready$";
+    private static String regex = "^220 \\S* SMTP Server Ready$";
     /**
      * Server Name.
      */
@@ -29,7 +29,7 @@ public class ServerReady extends NumHeaderMessage {
      * @param serverName name of the current server.
      */
     public ServerReady(String serverName) {
-        super(250, " ");
+        super(220, " ");
         this.serverName = serverName;
         this.construct();
     }
@@ -41,7 +41,7 @@ public class ServerReady extends NumHeaderMessage {
      * @throws MalformedMessageException if the message don't have the good structure.
      */
     public ServerReady(Object message) throws MalformedMessageException {
-        super(250, " ");
+        super(220, " ");
         if (matches((String) message)) {
             this.serverName = ((String) message).split(" ")[1];
             this.construct();
