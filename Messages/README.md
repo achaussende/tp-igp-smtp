@@ -20,6 +20,7 @@ SMTPMessage.matches(SMTPMessage smtpMessage, String message)
 * QUIT (Not tested)
 * MAIL FROM:<adresse> O
 * RCPT TO:<adresse> O
+* DATA
 
 ###Server Messages:
 * 220 <domain> SMTP Server Ready  O
