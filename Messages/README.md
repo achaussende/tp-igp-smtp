@@ -19,9 +19,11 @@ SMTPMessage.matches(SMTPMessage smtpMessage, String message)
 * EHLO <client> O
 * QUIT (Not tested)
 * MAIL FROM:<adresse> O
+* RCPT TO:<adresse> O
+* DATA
 
 ###Server Messages:
-* 250 <domain> SMTP Server Ready  O
+* 220 <domain> SMTP Server Ready  O
 * 221 <domain> Service closing transmission channel  O
 * 250 OK 
 * 250 <domain> O

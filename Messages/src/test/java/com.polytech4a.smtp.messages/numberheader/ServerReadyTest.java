@@ -16,7 +16,7 @@ public class ServerReadyTest extends TestCase {
 
     public void testMatches() throws Exception {
         ServerReady test = new ServerReady("toto");
-        ServerReady test1 = new ServerReady((Object) "250 titi SMTP Server Ready");
+        ServerReady test1 = new ServerReady((Object) "220 titi SMTP Server Ready");
         assertTrue("Building Failed", ServerReady.matches(test.toString()));
         assertTrue("Parsing Failed", ServerReady.matches(test1.toString()));
         assertEquals("toto", test.getServerName());

@@ -13,7 +13,8 @@ public enum SMTPMessage {
     NO_SUCH_USER("550 no such user"),
     QUIT("QUIT"),
     BAD_SEQUENCE_OF_COMMANDS("503 Bad sequence of commands"),
-    START_MAIL_INPUT("354 Start mail input; End data with <CR><LF>.<CR><LF>");
+    START_MAIL_INPUT("354 Start mail input; End data with <CR><LF>.<CR><LF>"),
+    DATA("DATA");
 
     private String message;
 
