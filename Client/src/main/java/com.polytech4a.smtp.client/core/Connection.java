@@ -111,6 +111,7 @@ public class Connection {
             }
         }
         try {
+            //send QUIT message in every case
             logger.info("CLOSING CONNECTION ... ...");
             in.close();
             out.close();

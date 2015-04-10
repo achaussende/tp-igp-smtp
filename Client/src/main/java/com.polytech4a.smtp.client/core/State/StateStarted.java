@@ -15,6 +15,7 @@ import com.polytech4a.smtp.messages.textheader.client.EHLO;
 public class StateStarted extends State {
     public StateStarted(Mail mailToSend) throws MalformedEmailException {
         super(mailToSend);
+        this.setNextState(this);
 
         String computerName;
         try {
@@ -34,6 +35,7 @@ public class StateStarted extends State {
         }
 
         try {
+            //Server ready message
             serverName = new ServerReady((Object)message).getServerName();
             this.setNextState(new StateEhloConfirm(this.getMailToSend(), serverName));
             return true;

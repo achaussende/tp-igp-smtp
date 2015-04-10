@@ -1,20 +1,51 @@
 package com.polytech4a.smtp.client.core.State;
 
 import com.polytech4a.smtp.client.core.Mail;
+import com.polytech4a.smtp.messages.SMTPMessage;
 
 /**
  * Created by Pierre on 08/04/2015.
  */
 public class StateRcpt extends State {
+    private boolean oneValid = false;
 
+    //Le premier a déjà été envoyé lors de la transition entre l'état précédent et celui-ci
+    private int indexReceivers = 1;
 
 
     public StateRcpt(Mail mailToSend) {
         super(mailToSend);
+        setNextState(this);
     }
 
     @Override
     public boolean analyze(String message) {
+        if(message == null){
+            incrementNbTry();
+            return false;
+        }
+
+        if(SMTPMessage.matches(SMTPMessage.OK, message) || SMTPMessage.matches(SMTPMessage.NO_SUCH_USER, message)){
+            if(!oneValid && SMTPMessage.matches(SMTPMessage.OK, message)){
+                oneValid = true;
+            }
+            if((indexReceivers == this.getMailToSend().getReceivers().length) && oneValid){
+                //next State
+                this.setNextState(new StateRcpt(this.getMailToSend()));
+                //send DATA
+                this.setMsgToSend("");
+                return true;
+            }
+            if((indexReceivers == this.getMailToSend().getReceivers().length) && !oneValid){
+                //send error then go to quit state
+            }
+            else{
+                //send RCPT
+                this.setMsgToSend("");
+                indexReceivers++;
+                return true;
+            }
+        }
         return false;
     }
 }

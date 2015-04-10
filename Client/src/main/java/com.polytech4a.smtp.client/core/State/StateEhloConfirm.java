@@ -1,8 +1,9 @@
 package com.polytech4a.smtp.client.core.State;
 
 import com.polytech4a.smtp.client.core.Mail;
-import com.polytech4a.smtp.messages.SMTPMessage;
 import com.polytech4a.smtp.messages.exceptions.MalformedEmailException;
+import com.polytech4a.smtp.messages.exceptions.MalformedMessageException;
+import com.polytech4a.smtp.messages.numberheader.server.EHLOAnswer;
 import com.polytech4a.smtp.messages.textheader.client.MAILFROM;
 
 /**
@@ -14,8 +15,7 @@ public class StateEhloConfirm extends State{
     public StateEhloConfirm(Mail mailToSend, String serverName) throws MalformedEmailException {
         super(mailToSend);
         this.serverName = serverName;
-        this.setNextState(new StateMail(mailToSend));
-
+        this.setNextState(this);
         this.setMsgToSend(new MAILFROM(mailToSend.getUser()).getHeader());
     }
 
@@ -26,7 +26,12 @@ public class StateEhloConfirm extends State{
             return false;
         }
 
-        //TODO C'est un message ehloAnswer ici (comparer aussi les serverNames)
-        return SMTPMessage.matches(SMTPMessage.OK, message);
+        try {
+            String oldServerName = new EHLOAnswer((Object)message).getServerName();
+            this.setNextState(new StateMail(this.getMailToSend()));
+            return serverName == oldServerName;
+        } catch (MalformedMessageException e) {
+            return false;
+        }
     }
 }
