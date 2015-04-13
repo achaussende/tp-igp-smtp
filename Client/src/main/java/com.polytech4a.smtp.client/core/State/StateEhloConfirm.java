@@ -32,6 +32,9 @@ public class StateEhloConfirm extends State{
             return serverName == oldServerName;
         } catch (MalformedMessageException e) {
             return false;
+        } catch (MalformedEmailException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }
