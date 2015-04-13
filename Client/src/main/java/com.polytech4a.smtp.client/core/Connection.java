@@ -8,6 +8,7 @@ import javax.net.SocketFactory;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 
 /**
@@ -26,37 +27,52 @@ public class Connection {
     private BufferedOutputStream out;
     private BufferedInputStream in;
 
+    private InetAddress serverDestAddress;
+    private int port;
+    private Mail mailToSend;
+
     private State currentState;
+
+    public Mail getMailToSend() {
+        return mailToSend;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public InetAddress getServerDestAddress() {
+        return serverDestAddress;
+    }
 
     public Connection() {
     }
 
-    public Connection(InetAddress address, int port, Mail mailToSend) throws IOException {
-        this.createConnection(address, port);
-        try {
-            this.currentState = new StateStarted(mailToSend);
-        } catch (MalformedEmailException e) {
-            logger.error("Cannot construct messages");
-        }
+    public Connection(InetAddress address, int port, Mail mailToSend){
+        this.serverDestAddress=address;
+        this.port=port;
+        this.mailToSend=mailToSend;
     }
 
     /**
      * Initialise the connection with the server and different objects with it, like the input and output streams
      *
-     * @param port    Port of the server to reach
-     * @param address IP Address of the server to reach
      */
-    public void createConnection(InetAddress address, int port) throws IOException {
-        logger.info("OPENING CONNECTION ... ...");
+    public void createConnection() throws IOException {
+        logger.info("OPENING CONNECTION  to "+serverDestAddress+" ... ...");
         SocketFactory factory = SSLSocketFactory.getDefault();
-
-        this.socket = (SSLSocket) factory.createSocket(address, port);
+        this.socket = (SSLSocket) factory.createSocket(serverDestAddress, port);
         this.socket.setSoTimeout(this.TIMEOUT * 1000);
         String[] suites = {"SSL_DH_anon_WITH_RC4_128_MD5"};
         this.socket.setEnabledCipherSuites(suites);
         this.out = new BufferedOutputStream(this.socket.getOutputStream());
         this.in = new BufferedInputStream(this.socket.getInputStream());
         logger.info("Connection opened ... ...");
+        try {
+            this.currentState = new StateStarted(mailToSend);
+        } catch (MalformedEmailException e) {
+            logger.error("Cannot construct messages");
+        }
     }
 
     /**
