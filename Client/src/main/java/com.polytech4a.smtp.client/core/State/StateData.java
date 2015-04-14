@@ -22,7 +22,7 @@ public class StateData extends State {
         }
 
         if(SMTPMessage.matches(SMTPMessage.START_MAIL_INPUT, message)){
-            this.setNextState(new StateDataConfirm());
+            this.setNextState(new StateDataConfirm(mailToSend));
             return true;
         }
         else
