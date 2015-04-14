@@ -8,6 +8,10 @@ import com.polytech4a.smtp.client.core.Mail;
 public abstract class State {
 
     /**
+     * Informations of the mail we want to send
+     */
+    protected Mail mailToSend;
+    /**
      * Next state in which the object will be.
      */
     private State nextState;
@@ -21,9 +25,13 @@ public abstract class State {
     private int nbTry;
 
     /**
-     * Informations of the mail we want to send
+     * Construxtor with the mail to send.
+     *
+     * @param mailToSend Mail to send to server.
      */
-    protected Mail mailToSend;
+    public State(Mail mailToSend) {
+        this.mailToSend = mailToSend;
+    }
 
     /**
      * Getter of the next state.
@@ -61,18 +69,8 @@ public abstract class State {
         this.msgToSend = msgToSend;
     }
 
-
-
     public void incrementNbTry() {
         nbTry++;
-    }
-
-    /**
-     * Construxtor with the mail to send.
-     * @param mailToSend Mail to send to server.
-     */
-    public State(Mail mailToSend) {
-        mailToSend=mailToSend;
     }
 
     /**
