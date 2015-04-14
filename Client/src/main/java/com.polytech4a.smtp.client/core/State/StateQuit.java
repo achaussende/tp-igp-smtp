@@ -17,11 +17,7 @@ public class StateQuit extends State{
      */
     @Override
     public boolean analyze(String message) {
-        if(SigningOff.matches(message)){
-            this.setMsgToSend(SMTPMessage.QUIT.toString());
-        }else{
-            this.setMsgToSend(SMTPMessage.QUIT.toString());
-        }
+        this.setMsgToSend("");
         return false;
     }
 }
