@@ -10,6 +10,19 @@ import com.polytech4a.smtp.messages.textheader.client.RCPTTO;
  */
 public class StateMail extends State{
 
+    /**
+     * Informations of the mail we want to send
+     */
+    private Mail mailToSend;
+
+    public Mail getMailToSend() {
+        return mailToSend;
+    }
+
+    public void setMailToSend(Mail mailToSend) {
+        this.mailToSend = mailToSend;
+    }
+
     public StateMail(Mail mailToSend) throws MalformedEmailException {
         super(mailToSend);
         this.setNextState(new StateRcpt(mailToSend));

@@ -19,10 +19,6 @@ public abstract class State {
      * Number of tries for sending a message
      */
     private int nbTry;
-    /**
-     * Informations of the mail we want to send
-     */
-    private Mail mailToSend;
 
     /**
      * Getter of the next state.
@@ -68,24 +64,8 @@ public abstract class State {
         this.nbTry = nbTry;
     }
 
-    public Mail getMailToSend() {
-        return mailToSend;
-    }
-
-    public void setMailToSend(Mail mailToSend) {
-        this.mailToSend = mailToSend;
-    }
-
     public void incrementNbTry() {
         nbTry++;
-    }
-
-    /**
-     * Constructor with Mail parameter.
-     */
-    public State(Mail mailToSend) {
-        this.mailToSend = mailToSend;
-        this.nbTry = 0;
     }
 
     /**
