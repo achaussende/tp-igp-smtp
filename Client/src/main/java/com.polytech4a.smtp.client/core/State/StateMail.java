@@ -13,7 +13,7 @@ public class StateMail extends State{
     public StateMail(Mail mailToSend) throws MalformedEmailException {
         super(mailToSend);
         this.setNextState(new StateRcpt(mailToSend));
-        this.setMsgToSend(new RCPTTO(mailToSend.getReceivers().get(0)).getHeader());
+        this.setMsgToSend(new RCPTTO(mailToSend.getReceivers().get(0)).toString());
     }
 
     @Override
