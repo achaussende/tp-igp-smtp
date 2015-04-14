@@ -23,7 +23,7 @@ public abstract class State {
     /**
      * Informations of the mail we want to send
      */
-    private Mail mailToSend;
+    protected Mail mailToSend;
 
     /**
      * Getter of the next state.
@@ -61,31 +61,18 @@ public abstract class State {
         this.msgToSend = msgToSend;
     }
 
-    public int getNbTry() {
-        return nbTry;
-    }
 
-    public void setNbTry(int nbTry) {
-        this.nbTry = nbTry;
-    }
-
-    public Mail getMailToSend() {
-        return mailToSend;
-    }
-
-    public void setMailToSend(Mail mailToSend) {
-        this.mailToSend = mailToSend;
-    }
 
     public void incrementNbTry() {
         nbTry++;
     }
 
     /**
-     * Blank constructor.
+     * Construxtor with the mail to send.
+     * @param mailToSend Mail to send to server.
      */
-    public State() {
-
+    public State(Mail mailToSend) {
+        mailToSend=mailToSend;
     }
 
     /**

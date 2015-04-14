@@ -31,19 +31,19 @@ public class StateRcpt extends State {
             if(!oneValid && SMTPMessage.matches(SMTPMessage.OK, message)){
                 oneValid = true;
             }
-            if((indexReceivers == this.getMailToSend().getReceivers().size()) && oneValid){
+            if((indexReceivers == this.mailToSend.getReceivers().size()) && oneValid){
                 //next State
-                this.setNextState(new StateRcpt(this.getMailToSend()));
+                this.setNextState(new StateRcpt(this.mailToSend));
                 //send DATA
                 this.setMsgToSend("");
                 return true;
             }
-            if((indexReceivers == this.getMailToSend().getReceivers().size()) && !oneValid){
+            if((indexReceivers == this.mailToSend.getReceivers().size()) && !oneValid){
                 //send error then go to quit state
             }
             else{
                 try {
-                    this.setMsgToSend(new RCPTTO(this.getMailToSend().getReceivers().get(indexReceivers)).getHeader());
+                    this.setMsgToSend(new RCPTTO(this.mailToSend.getReceivers().get(indexReceivers)).getHeader());
                     indexReceivers++;
                     return true;
                 } catch (MalformedEmailException e) {

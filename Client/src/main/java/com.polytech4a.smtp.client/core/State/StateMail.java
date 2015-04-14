@@ -12,8 +12,6 @@ public class StateMail extends State{
 
     public StateMail(Mail mailToSend) throws MalformedEmailException {
         super(mailToSend);
-        this.setNextState(new StateRcpt(mailToSend));
-        this.setMsgToSend(new RCPTTO(mailToSend.getReceivers().get(0)).toString());
     }
 
     @Override
@@ -22,8 +20,7 @@ public class StateMail extends State{
             incrementNbTry();
             return false;
         }
-
-        this.setNextState(new StateRcpt(this.getMailToSend()));
+        this.setNextState(new StateRcpt(mailToSend));
         return true;
     }
 }

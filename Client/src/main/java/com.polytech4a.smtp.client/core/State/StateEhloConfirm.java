@@ -1,40 +1,48 @@
 package com.polytech4a.smtp.client.core.State;
 
 import com.polytech4a.smtp.client.core.Mail;
+import com.polytech4a.smtp.messages.SMTPMessage;
 import com.polytech4a.smtp.messages.exceptions.MalformedEmailException;
 import com.polytech4a.smtp.messages.exceptions.MalformedMessageException;
 import com.polytech4a.smtp.messages.numberheader.server.EHLOAnswer;
+import com.polytech4a.smtp.messages.textheader.client.EHLO;
 import com.polytech4a.smtp.messages.textheader.client.MAILFROM;
+import org.apache.log4j.Logger;
 
 /**
  * Created by Pierre on 01/04/2015.
  */
 public class StateEhloConfirm extends State{
-    private String serverName;
 
-    public StateEhloConfirm(Mail mailToSend, String serverName) throws MalformedEmailException {
+    /**
+     * Logger.
+     */
+    private static Logger logger=Logger.getLogger(StateEhloConfirm.class);
+
+    /**
+     * Construxtor with the mail to send.
+     *
+     * @param mailToSend Mail to send to server.
+     */
+    public StateEhloConfirm(Mail mailToSend) {
         super(mailToSend);
-        this.serverName = serverName;
-        this.setNextState(this);
-        this.setMsgToSend(new MAILFROM(mailToSend.getUser()).toString());
     }
 
     @Override
     public boolean analyze(String message) {
-        if(message == null){
-            incrementNbTry();
-            return false;
+        if(message != null){
+            if(EHLOAnswer.matches(message)){
+                try {
+                    this.setMsgToSend(new MAILFROM(mailToSend.getUser()).toString());
+                    return true;
+                } catch (MalformedEmailException e) {
+                    logger.error("Mail From user is Malformed",e);
+                }
+            }else{
+                this.setMsgToSend(SMTPMessage.QUIT.toString());
+                this.setNextState(new StateQuit(mailToSend));
+            }
         }
-
-        try {
-            String oldServerName = new EHLOAnswer((Object)message).getServerName();
-            this.setNextState(new StateMail(this.getMailToSend()));
-            return serverName == oldServerName;
-        } catch (MalformedMessageException e) {
-            return false;
-        } catch (MalformedEmailException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return false;
     }
 }
