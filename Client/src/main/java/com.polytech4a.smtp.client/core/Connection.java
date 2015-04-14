@@ -1,6 +1,7 @@
 package com.polytech4a.smtp.client.core;
 
 import com.polytech4a.smtp.client.core.State.State;
+import com.polytech4a.smtp.client.core.State.StateInit;
 import com.polytech4a.smtp.client.core.State.StateStarted;
 import com.polytech4a.smtp.messages.exceptions.MalformedEmailException;
 import org.apache.log4j.Logger;
@@ -68,11 +69,7 @@ public class Connection {
         this.out = new BufferedOutputStream(this.socket.getOutputStream());
         this.in = new BufferedInputStream(this.socket.getInputStream());
         logger.info("Connection opened ... ...");
-        try {
-            this.currentState = new StateStarted(mailToSend);
-        } catch (MalformedEmailException e) {
-            logger.error("Cannot construct messages");
-        }
+        this.currentState = new StateInit(mailToSend);
     }
 
     /**
@@ -87,7 +84,7 @@ public class Connection {
      * Send the message to the server through the created streams
      */
     private void sendMessage(){
-        logger.info("Send: " + currentState.getMsgToSend());
+        logger.info("Client : " + currentState.getMsgToSend());
         try {
             this.out.write(currentState.getMsgToSend().getBytes());
             this.out.flush();
@@ -114,6 +111,8 @@ public class Connection {
      */
     public void processing() {
         boolean runConnection = true;
+        // Client is in init state. It's the entry point for processing loop.
+        updateState();
         while (runConnection) {
             String message = null;
             try {

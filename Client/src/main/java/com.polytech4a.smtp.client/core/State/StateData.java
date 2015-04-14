@@ -11,7 +11,7 @@ public class StateData extends State {
     public StateData(Mail mailToSend) {
         super(mailToSend);
         this.setNextState(this);
-        this.setMsgToSend(this.getMailToSend().getMailToSend());
+        this.setMsgToSend(this.mailToSend.getMailToSend());
     }
 
     @Override

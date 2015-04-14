@@ -25,6 +25,9 @@ public class StateWaitRCPT extends State {
         //  User usr = new User(rcpt.getUser());
         //  if (manager.userExists(user))
         //      manager.lockUser(usr);
+        boolean keepConnection = handleQuit(message);
+        if(!keepConnection)
+            return keepConnection;
         boolean usr = true;
         if (RCPTTO.matches(message)) {
             if (usr) {
@@ -52,10 +55,6 @@ public class StateWaitRCPT extends State {
                 setNextState(new StateInit());
                 return true;
             }
-        } else if (SMTPMessage.matches(SMTPMessage.QUIT, message)) {
-            setMsgToSend(new SigningOff(Server.SERVER_NAME).toString());
-            setNextState(new StateInit());
-            return false;
         } else {
             setMsgToSend(SMTPMessage.BAD_SEQUENCE_OF_COMMANDS.toString());
             setNextState(this);

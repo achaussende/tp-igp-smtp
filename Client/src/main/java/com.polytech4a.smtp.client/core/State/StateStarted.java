@@ -1,29 +1,19 @@
 package com.polytech4a.smtp.client.core.State;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import com.polytech4a.smtp.client.core.Mail;
-import com.polytech4a.smtp.messages.exceptions.MalformedEmailException;
-import com.polytech4a.smtp.messages.exceptions.MalformedMessageException;
+import com.polytech4a.smtp.messages.SMTPMessage;
 import com.polytech4a.smtp.messages.numberheader.server.ServerReady;
 import com.polytech4a.smtp.messages.textheader.client.EHLO;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * Created by Pierre on 01/04/2015.
  */
 public class StateStarted extends State {
-    public StateStarted(Mail mailToSend) throws MalformedEmailException {
+    public StateStarted(Mail mailToSend) {
         super(mailToSend);
-        this.setNextState(this);
-
-        String computerName;
-        try {
-            computerName = InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException e) {
-            computerName = "Unknown";
-        }
-        this.setMsgToSend(new EHLO(computerName).getHeader());
     }
 
     @Override
@@ -34,15 +24,18 @@ public class StateStarted extends State {
             return false;
         }
 
-        try {
-            //Server ready message
-            serverName = new ServerReady((Object)message).getServerName();
-            this.setNextState(new StateEhloConfirm(this.getMailToSend(), serverName));
+        if(ServerReady.matches(message)) {
+            try {
+                setNextState(new StateEhloConfirm(mailToSend));
+                setMsgToSend(new EHLO(InetAddress.getLocalHost().getHostName()).toString());
+            } catch (UnknownHostException e) {
+                setMsgToSend(new EHLO("Unknown").toString());
+            }
             return true;
-        } catch (MalformedEmailException e) {
-            return false;
-        } catch (MalformedMessageException e) {
-            return false;
+        } else {
+            setNextState(new StateQuit(mailToSend));
+            setMsgToSend(SMTPMessage.QUIT.toString());
+            return true;
         }
     }
 }

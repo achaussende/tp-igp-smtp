@@ -13,7 +13,7 @@ import com.polytech4a.smtp.messages.numberheader.NumHeaderMessage;
  */
 public class EHLOAnswer extends NumHeaderMessage {
 
-    private static final String regex = "^250 \\S$";
+    private static final String regex = "^250 \\S*$";
     /**
      * Name of the server.
      */
