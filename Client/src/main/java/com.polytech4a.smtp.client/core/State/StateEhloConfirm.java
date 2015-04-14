@@ -16,7 +16,7 @@ public class StateEhloConfirm extends State{
         super(mailToSend);
         this.serverName = serverName;
         this.setNextState(this);
-        this.setMsgToSend(new MAILFROM(mailToSend.getUser()).getHeader());
+        this.setMsgToSend(new MAILFROM(mailToSend.getUser()).toString());
     }
 
     @Override
