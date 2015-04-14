@@ -2,6 +2,8 @@ package com.polytech4a.smtp.mailmanager;
 
 import com.polytech4a.smtp.mailmanager.exceptions.MailManagerException;
 import com.polytech4a.smtp.mailmanager.exceptions.MalFormedMailException;
+import com.polytech4a.smtp.mailmanager.user.User;
+import com.polytech4a.smtp.mailmanager.user.UserServer;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
  *          <p/>
  *          Server Mail Manager for POP3.
  */
-public class MailManagerServer extends MailManager {
+public class Server extends MailManager {
 
     /**
      * List of users of the MailManager
@@ -79,7 +81,7 @@ public class MailManagerServer extends MailManager {
     /**
      * Constructor of ServerMailManager
      */
-    public MailManagerServer(String path) throws MailManagerException {
+    public Server(String path) throws MailManagerException {
         super(path);
         this.users = initUsers();
     }
@@ -93,7 +95,7 @@ public class MailManagerServer extends MailManager {
      */
     public UserServer getUser(String login, String password) {
         for (UserServer u : users) {
-            if (u.getLogin().equals(login)) {
+            if (u.getLogin().equals(login) && u.getPassword().equals(password)) {
                 try {
                     u.initMails();
                     return u;

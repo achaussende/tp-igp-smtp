@@ -1,6 +1,7 @@
 package com.polytech4a.smtp.mailmanager;
 
 import com.polytech4a.smtp.mailmanager.exceptions.MailManagerException;
+import com.polytech4a.smtp.mailmanager.user.UserClient;
 
 import java.io.File;
 
@@ -11,7 +12,7 @@ import java.io.File;
  *          <p/>
  *          Client Mail Manager for POP3.
  */
-public class MailManagerClient extends MailManager {
+public class Client extends MailManager {
 
     private UserClient user;
 
@@ -21,7 +22,7 @@ public class MailManagerClient extends MailManager {
      * @param login : String login of the user
      * @param path  : String path of the user's directory
      */
-    public MailManagerClient(String login, String path) throws MailManagerException {
+    public Client(String login, String path) throws MailManagerException {
         super(path);
         this.user = new UserClient(login, this.path);
     }

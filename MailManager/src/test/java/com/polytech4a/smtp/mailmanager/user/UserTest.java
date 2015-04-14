@@ -1,5 +1,6 @@
-package com.polytech4a.smtp.mailmanager;
+package com.polytech4a.smtp.mailmanager.user;
 
+import com.polytech4a.smtp.mailmanager.mail.Mail;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,15 +1,15 @@
-package com.polytech4a.smtp.mailmanager;
+package com.polytech4a.smtp.mailmanager.mail;
 
 /**
  * Created by Dimitri on 09/03/2015.
  */
-public class MailParameterDate extends MailParameter {
+public class ParameterDate extends Parameter {
     /**
      * Constructor of the date parameter
      *
      * @param content : content of the parameter
      */
-    public MailParameterDate(String content) {
+    public ParameterDate(String content) {
         super(content, "ORIG-DATE:");
     }
 }

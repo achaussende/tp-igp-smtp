@@ -1,16 +1,16 @@
-package com.polytech4a.smtp.mailmanager;
+package com.polytech4a.smtp.mailmanager.mail;
 
 /**
  * Created by Dimitri on 09/03/2015.
  */
-public class MailParameterSender extends MailParameter {
+public class ParameterSender extends Parameter {
 
     /**
      * Constructor of the sender parameter
      *
      * @param content : content of the parameter
      */
-    public MailParameterSender(String content) {
+    public ParameterSender(String content) {
         super(content, "FROM:");
     }
 }

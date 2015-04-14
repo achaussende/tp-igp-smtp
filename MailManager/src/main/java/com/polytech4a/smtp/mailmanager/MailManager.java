@@ -1,6 +1,7 @@
 package com.polytech4a.smtp.mailmanager;
 
 import com.polytech4a.smtp.mailmanager.exceptions.MailManagerException;
+import com.polytech4a.smtp.mailmanager.user.User;
 
 /**
  * Created by Dimitri on 03/03/2015.

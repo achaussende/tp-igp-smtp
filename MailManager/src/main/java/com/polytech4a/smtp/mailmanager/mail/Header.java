@@ -1,4 +1,4 @@
-package com.polytech4a.smtp.mailmanager;
+package com.polytech4a.smtp.mailmanager.mail;
 
 import com.polytech4a.smtp.mailmanager.exceptions.MalFormedMailException;
 
@@ -22,7 +22,7 @@ public class Header {
     /**
      * Array that contains all the required parameter for the header
      */
-    private ArrayList<MailParameter> parameters;
+    private ArrayList<Parameter> parameters;
 
     /**
      * Constructor for a mail's header
@@ -32,11 +32,11 @@ public class Header {
      * @param subject  : String subject of the mail
      */
     public Header(String receiver, String sender, String subject) {
-        this.parameters = new ArrayList<MailParameter>();
-        this.parameters.add(new MailParameterReceiver(receiver));
-        this.parameters.add(new MailParameterSender(sender));
-        this.parameters.add(new MailParameterSubject(subject));
-        this.parameters.add(new MailParameterDate(new Date().toString()));
+        this.parameters = new ArrayList<Parameter>();
+        this.parameters.add(new ParameterReceiver(receiver));
+        this.parameters.add(new ParameterSender(sender));
+        this.parameters.add(new ParameterSubject(subject));
+        this.parameters.add(new ParameterDate(new Date().toString()));
         this.output = new StringBuffer();
         buildHeader();
     }
@@ -50,13 +50,13 @@ public class Header {
      * @throws MalFormedMailException
      */
     public Header(String input) throws MalFormedMailException {
-        this.parameters = new ArrayList<MailParameter>();
-        this.parameters.add(new MailParameterReceiver(""));
-        this.parameters.add(new MailParameterSender(""));
-        this.parameters.add(new MailParameterSubject(""));
-        this.parameters.add(new MailParameterDate(""));
+        this.parameters = new ArrayList<Parameter>();
+        this.parameters.add(new ParameterReceiver(""));
+        this.parameters.add(new ParameterSender(""));
+        this.parameters.add(new ParameterSubject(""));
+        this.parameters.add(new ParameterDate(""));
         this.output = new StringBuffer(input);
-        for (MailParameter param : parameters) {
+        for (Parameter param : parameters) {
             if (!param.parseParameter(input))
                 throw new MalFormedMailException("Header.Header(" + input + "): The input string does not match the mail format for " + param.getClass().toString());
         }
@@ -69,10 +69,10 @@ public class Header {
      */
     public StringBuffer buildHeader() {
         output = new StringBuffer();
-        for (MailParameter param : parameters) {
+        for (Parameter param : parameters) {
             output.append(param.buildParameter());
         }
-        output.append(MailParameter.END_LINE);
+        output.append(Parameter.END_LINE);
         return output;
     }
 

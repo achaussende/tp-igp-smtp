@@ -1,15 +1,15 @@
-package com.polytech4a.smtp.mailmanager;
+package com.polytech4a.smtp.mailmanager.mail;
 
 /**
  * Created by Dimitri on 09/03/2015.
  */
-public class MailParameterReceiver extends MailParameter {
+public class ParameterReceiver extends Parameter {
     /**
      * Constructor of the receiver parameter
      *
      * @param content : content of the parameter
      */
-    public MailParameterReceiver(String content) {
+    public ParameterReceiver(String content) {
         super(content, "TO:");
     }
 }

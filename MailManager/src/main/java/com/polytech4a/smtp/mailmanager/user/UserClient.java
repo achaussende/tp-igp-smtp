@@ -1,4 +1,4 @@
-package com.polytech4a.smtp.mailmanager;
+package com.polytech4a.smtp.mailmanager.user;
 
 import com.polytech4a.smtp.mailmanager.exceptions.MailManagerException;
 

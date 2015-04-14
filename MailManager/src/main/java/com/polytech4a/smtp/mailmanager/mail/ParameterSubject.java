@@ -1,15 +1,15 @@
-package com.polytech4a.smtp.mailmanager;
+package com.polytech4a.smtp.mailmanager.mail;
 
 /**
  * Created by Dimitri on 09/03/2015.
  */
-public class MailParameterSubject extends MailParameter {
+public class ParameterSubject extends Parameter {
     /**
      * Constructor of Subject Parameter
      *
      * @param content : content of the parameter
      */
-    public MailParameterSubject(String content) {
+    public ParameterSubject(String content) {
         super(content, "SUBJECT:");
     }
 }

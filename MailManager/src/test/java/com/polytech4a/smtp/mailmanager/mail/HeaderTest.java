@@ -1,4 +1,4 @@
-package com.polytech4a.smtp.mailmanager;
+package com.polytech4a.smtp.mailmanager.mail;
 
 import com.polytech4a.smtp.mailmanager.exceptions.MalFormedMailException;
 import junit.framework.TestCase;
@@ -24,11 +24,11 @@ public class HeaderTest {
 
         this.header = new Header(receiver, sender, subject);
         this.expectedOutput = new StringBuffer();
-        this.expectedOutput.append("TO:" + receiver + MailParameter.END_LINE);
-        this.expectedOutput.append("FROM:test sender with a very long mail address to check the line length building" + MailParameter.END_LINE + " with the constant" + MailParameter.END_LINE);
-        this.expectedOutput.append("SUBJECT:" + subject + MailParameter.END_LINE);
-        this.expectedOutput.append("ORIG-DATE:" + date + MailParameter.END_LINE);
-        this.expectedOutput.append(MailParameter.END_LINE);
+        this.expectedOutput.append("TO:" + receiver + Parameter.END_LINE);
+        this.expectedOutput.append("FROM:test sender with a very long mail address to check the line length building" + Parameter.END_LINE + " with the constant" + Parameter.END_LINE);
+        this.expectedOutput.append("SUBJECT:" + subject + Parameter.END_LINE);
+        this.expectedOutput.append("ORIG-DATE:" + date + Parameter.END_LINE);
+        this.expectedOutput.append(Parameter.END_LINE);
     }
 
     @Test

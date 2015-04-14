@@ -1,4 +1,4 @@
-package com.polytech4a.smtp.mailmanager;
+package com.polytech4a.smtp.mailmanager.mail;
 
 import com.polytech4a.smtp.mailmanager.exceptions.MalFormedMailException;
 import junit.framework.TestCase;
@@ -29,16 +29,16 @@ public class MailTest {
         this.mail = new Mail(receiver, sender,
                 content, subject);
         this.expectedOutput = new StringBuffer();
-        this.expectedOutput.append("TO:" + receiver + MailParameter.END_LINE);
-        this.expectedOutput.append("FROM:test sender with a very long mail address to check the line length building" + MailParameter.END_LINE + " with the constant" + MailParameter.END_LINE);
-        this.expectedOutput.append("SUBJECT:" + subject + MailParameter.END_LINE);
-        this.expectedOutput.append("ORIG-DATE:" + date + MailParameter.END_LINE);
-        this.expectedOutput.append(MailParameter.END_LINE);
-        this.expectedOutput.append("This is an email content test with an email incredibly long but I have no" + MailParameter.END_LINE
-                + " more ideas to lengthen so I'll just add random words. Hoover, Pineapple," + MailParameter.END_LINE
+        this.expectedOutput.append("TO:" + receiver + Parameter.END_LINE);
+        this.expectedOutput.append("FROM:test sender with a very long mail address to check the line length building" + Parameter.END_LINE + " with the constant" + Parameter.END_LINE);
+        this.expectedOutput.append("SUBJECT:" + subject + Parameter.END_LINE);
+        this.expectedOutput.append("ORIG-DATE:" + date + Parameter.END_LINE);
+        this.expectedOutput.append(Parameter.END_LINE);
+        this.expectedOutput.append("This is an email content test with an email incredibly long but I have no" + Parameter.END_LINE
+                + " more ideas to lengthen so I'll just add random words. Hoover, Pineapple," + Parameter.END_LINE
                 + " Chameleon, Zephyr.\nThank you for your attention.\nBest Regards,\n\nPatrick Henry");
-        this.expectedOutput.append(MailParameter.END_LINE);
-        this.expectedOutput.append(MailParameter.END_LINE);
+        this.expectedOutput.append(Parameter.END_LINE);
+        this.expectedOutput.append(Parameter.END_LINE);
     }
 
     @Test

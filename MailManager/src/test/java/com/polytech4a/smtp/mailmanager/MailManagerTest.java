@@ -1,5 +1,6 @@
 package com.polytech4a.smtp.mailmanager;
 
+import com.polytech4a.smtp.mailmanager.user.UserServer;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,13 +10,13 @@ import java.util.ArrayList;
  * Created by Dimitri on 14/04/2015.
  */
 public class MailManagerTest {
-    MailManagerClient client;
-    MailManagerServer server;
+    Client client;
+    Server server;
 
     @Before
     public void setUp() throws Exception {
-        client = new MailManagerClient("a.caron@a.fr", "../OUTPUT/Client/");
-        server = new MailManagerServer("../OUTPUT/Server/");
+        client = new Client("a.caron@a.fr", "../OUTPUT/Client/");
+        server = new Server("../OUTPUT/Server/");
     }
 
     @Test
@@ -33,9 +34,9 @@ public class MailManagerTest {
         //Remove all the common mail to see differences
         assert (server.getUsers().size() == server_expected.size());
         for (int i = 0; i < server.getUsers().size(); i++) {
-            assert (server.getUsers().get(i).path.equals(server_expected.get(i).path) &&
-                    server.getUsers().get(i).login.equals(server_expected.get(i).login) &&
-                    server.getUsers().get(i).password.equals(server_expected.get(i).password));
+            assert (server.getUsers().get(i).getPath().equals(server_expected.get(i).getPath()) &&
+                    server.getUsers().get(i).getLogin().equals(server_expected.get(i).getLogin()) &&
+                    server.getUsers().get(i).getPassword().equals(server_expected.get(i).getPassword()));
         }
     }
 

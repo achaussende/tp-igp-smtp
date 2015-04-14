@@ -1,4 +1,4 @@
-package com.polytech4a.smtp.mailmanager;
+package com.polytech4a.smtp.mailmanager.mail;
 
 import com.polytech4a.smtp.mailmanager.exceptions.MalFormedMailException;
 
@@ -9,7 +9,7 @@ import com.polytech4a.smtp.mailmanager.exceptions.MalFormedMailException;
  *          <p/>
  *          Mails exchanged for POP3.
  */
-public class Mail extends MailParameter {
+public class Mail extends Parameter {
 
     /**
      * Header part of the mail.
@@ -39,7 +39,7 @@ public class Mail extends MailParameter {
      * @param subject  : String subject of the mail
      */
     public Mail(String receiver, String sender, String content, String subject) {
-        super(content, MailParameter.END_LINE + MailParameter.END_LINE);
+        super(content, Parameter.END_LINE + Parameter.END_LINE);
         this.header = new Header(receiver, sender, subject);
         this.output = new StringBuffer();
         buildParameter();
@@ -54,7 +54,7 @@ public class Mail extends MailParameter {
      * @throws MalFormedMailException
      */
     public Mail(String input) throws MalFormedMailException {
-        super(input, MailParameter.END_LINE + MailParameter.END_LINE);
+        super(input, Parameter.END_LINE + Parameter.END_LINE);
         this.output = new StringBuffer(input);
         if (!parseParameter(input)) {
             throw new MalFormedMailException("Mail Header MalFormed : expected parameters TO, FROM, SUBJECT, ORIG-DATE");
@@ -68,7 +68,7 @@ public class Mail extends MailParameter {
     public StringBuffer buildParameter() {
         output = new StringBuffer(header.buildHeader());
         output.append(parseLine(content));
-        output.append(MailParameter.END_LINE);
+        output.append(Parameter.END_LINE);
         return output;
     }
 
@@ -81,12 +81,12 @@ public class Mail extends MailParameter {
         if (output.contains(parser)) {
             tamp = output.split(parser);
             try {
-                header = new Header(tamp[0] + MailParameter.END_LINE);
+                header = new Header(tamp[0] + Parameter.END_LINE);
             } catch (MalFormedMailException ex) {
                 System.out.println("Mail.parseParameter : Failed to create header : " + ex.getMessage());
                 return false;
             }
-            tamp = tamp[1].split(MailParameter.END_LINE);
+            tamp = tamp[1].split(Parameter.END_LINE);
             content = "";
             for (String line : tamp) {
                 content += line;

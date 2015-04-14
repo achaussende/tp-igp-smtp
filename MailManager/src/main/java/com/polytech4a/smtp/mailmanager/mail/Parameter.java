@@ -1,4 +1,4 @@
-package com.polytech4a.smtp.mailmanager;
+package com.polytech4a.smtp.mailmanager.mail;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Dimitri on 09/03/2015.
  */
-public abstract class MailParameter {
+public abstract class Parameter {
 
     /**
      * linefeed for POP3 mails
@@ -34,7 +34,7 @@ public abstract class MailParameter {
      * @param content : content of the parameter
      * @param parser  : parser of the parameter
      */
-    public MailParameter(String content, String parser) {
+    public Parameter(String content, String parser) {
         this.content = content;
         this.parser = parser;
     }
@@ -120,8 +120,8 @@ public abstract class MailParameter {
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof MailParameter) {
-            MailParameter parameter = (MailParameter) o;
+        if (o instanceof Parameter) {
+            Parameter parameter = (Parameter) o;
             return parameter.content.equals(this.content) && parameter.parser.equals(this.parser);
         }
         return false;

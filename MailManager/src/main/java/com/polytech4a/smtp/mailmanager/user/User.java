@@ -1,7 +1,8 @@
-package com.polytech4a.smtp.mailmanager;
+package com.polytech4a.smtp.mailmanager.user;
 
 import com.polytech4a.smtp.mailmanager.exceptions.MailManagerException;
 import com.polytech4a.smtp.mailmanager.exceptions.MalFormedMailException;
+import com.polytech4a.smtp.mailmanager.mail.Mail;
 
 import java.io.File;
 import java.io.FileNotFoundException;
