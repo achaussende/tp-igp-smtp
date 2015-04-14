@@ -55,6 +55,7 @@ public class Mail extends MailParameter {
      */
     public Mail(String input) throws MalFormedMailException {
         super(input, MailParameter.END_LINE + MailParameter.END_LINE);
+        this.output = new StringBuffer(input);
         if (!parseParameter(input)) {
             throw new MalFormedMailException("Mail Header MalFormed : expected parameters TO, FROM, SUBJECT, ORIG-DATE");
         }
