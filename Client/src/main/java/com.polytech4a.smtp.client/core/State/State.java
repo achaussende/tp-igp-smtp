@@ -21,6 +21,11 @@ public abstract class State {
     private int nbTry;
 
     /**
+     * Informations of the mail we want to send
+     */
+    private Mail mailToSend;
+
+    /**
      * Getter of the next state.
      *
      * @return nextState State.
@@ -62,6 +67,14 @@ public abstract class State {
 
     public void setNbTry(int nbTry) {
         this.nbTry = nbTry;
+    }
+
+    public Mail getMailToSend() {
+        return mailToSend;
+    }
+
+    public void setMailToSend(Mail mailToSend) {
+        this.mailToSend = mailToSend;
     }
 
     public void incrementNbTry() {
