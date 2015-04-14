@@ -23,7 +23,7 @@ public class StateStarted extends State {
         } catch (UnknownHostException e) {
             computerName = "Unknown";
         }
-        this.setMsgToSend(new EHLO(computerName).getHeader());
+        this.setMsgToSend(new EHLO(computerName).toString());
     }
 
     @Override
