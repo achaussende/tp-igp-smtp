@@ -16,14 +16,13 @@ import com.polytech4a.smtp.server.Server;
 public class StateWaitEnd extends State {
     @Override
     public boolean analyze(String message) {
+        boolean keepConnection = handleQuit(message);
+        if(!keepConnection)
+            return keepConnection;
         if (MAILFROM.matches(message)) {
             setMsgToSend(SMTPMessage.OK.toString());
             setNextState(new StateWaitRCPT());
             return true;
-        } else if (SMTPMessage.matches(SMTPMessage.QUIT, message)) {
-            setMsgToSend(new SigningOff(Server.SERVER_NAME).toString());
-            setNextState(new StateInit());
-            return false;
         } else {
             setMsgToSend(SMTPMessage.BAD_SEQUENCE_OF_COMMANDS.toString());
             setNextState(new StateInit());

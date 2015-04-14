@@ -15,9 +15,11 @@ import com.polytech4a.smtp.server.Server;
  */
 public class StateStart extends State {
 
-
     @Override
     public boolean analyze(String message) {
+        boolean keepConnection = handleQuit(message);
+        if(!keepConnection)
+            return keepConnection;
         if (EHLO.matches(message)) {
             setNextState(new StateWaitMail());
             setMsgToSend(new EHLOAnswer(Server.SERVER_NAME).toString());

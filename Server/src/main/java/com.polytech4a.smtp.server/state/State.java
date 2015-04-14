@@ -1,5 +1,9 @@
 package com.polytech4a.smtp.server.state;
 
+import com.polytech4a.smtp.messages.SMTPMessage;
+import com.polytech4a.smtp.messages.numberheader.server.SigningOff;
+import com.polytech4a.smtp.server.Server;
+
 /**
  * Created by Adrien CHAUSSENDE on 30/03/2015.
  *
@@ -67,4 +71,19 @@ public abstract class State {
      * @param message String
      */
     public abstract boolean analyze(String message);
+
+    /**
+     * Handle reception of a Quit message. Return true if the connection can continue, false if not.
+     * @param message Received message.
+     * @return True if the connection can continue. False if the client disconnected.
+     */
+    protected boolean handleQuit(String message){
+        if(SMTPMessage.matches(SMTPMessage.QUIT, message)) {
+            setMsgToSend(new SigningOff(Server.SERVER_NAME).toString());
+            setNextState(new StateInit());
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

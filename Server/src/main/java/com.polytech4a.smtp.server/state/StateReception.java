@@ -14,6 +14,9 @@ public class StateReception extends State {
 
     @Override
     public boolean analyze(String message) {
+        boolean keepConnection = handleQuit(message);
+        if(!keepConnection)
+            return keepConnection;
         //if ('5chars'Message.matches(message))
             setNextState(new StateWaitEnd());
             setMsgToSend(SMTPMessage.OK.toString());

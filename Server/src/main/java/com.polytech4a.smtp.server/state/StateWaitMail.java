@@ -15,6 +15,9 @@ import com.polytech4a.smtp.messages.textheader.client.MAILFROM;
 public class StateWaitMail extends State {
     @Override
     public boolean analyze(String message) {
+        boolean keepConnection = handleQuit(message);
+        if(!keepConnection)
+            return keepConnection;
         if(MAILFROM.matches(message)) {
             try {
                 MAILFROM mailFromMessage = new MAILFROM(message);
