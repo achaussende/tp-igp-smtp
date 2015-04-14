@@ -80,11 +80,16 @@ public abstract class State {
         nbTry++;
     }
 
+
+    public State(Mail mailToSend) {
+        this.mailToSend = mailToSend;
+        this.nbTry = 0;
+    }
+
     /**
      * Blank constructor.
      */
-    public State(Mail mailToSend) {
-        this.mailToSend = mailToSend;
+    public State(){
         this.nbTry = 0;
     }
 

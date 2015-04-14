@@ -20,6 +20,9 @@ public class StateRcpt extends State {
         setNextState(this);
     }
 
+    /**
+     * Several cases, to got to the next state, we must have received one confirmation at least and have no other user
+     */
     @Override
     public boolean analyze(String message) {
         if(message == null){
@@ -32,14 +35,14 @@ public class StateRcpt extends State {
                 oneValid = true;
             }
             if((indexReceivers == this.getMailToSend().getReceivers().size()) && oneValid){
-                //next State
-                this.setNextState(new StateRcpt(this.getMailToSend()));
-                //send DATA
-                this.setMsgToSend("");
+                this.setNextState(new StateData(this.getMailToSend()));
+                this.setMsgToSend(SMTPMessage.DATA.toString());
                 return true;
             }
             if((indexReceivers == this.getMailToSend().getReceivers().size()) && !oneValid){
-                //send error then go to quit state
+                this.setNextState(new StateQuit());
+                this.setMsgToSend(SMTPMessage.QUIT.toString());
+                return true;
             }
             else{
                 try {
