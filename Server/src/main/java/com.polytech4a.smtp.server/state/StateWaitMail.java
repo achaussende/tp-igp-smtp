@@ -2,6 +2,7 @@ package com.polytech4a.smtp.server.state;
 
 import com.polytech4a.smtp.messages.SMTPMessage;
 import com.polytech4a.smtp.messages.exceptions.MalformedEmailException;
+import com.polytech4a.smtp.messages.exceptions.MalformedMessageException;
 import com.polytech4a.smtp.messages.textheader.client.MAILFROM;
 
 /**
@@ -20,13 +21,13 @@ public class StateWaitMail extends State {
             return keepConnection;
         if(MAILFROM.matches(message)) {
             try {
-                MAILFROM mailFromMessage = new MAILFROM(message);
+                MAILFROM mailFromMessage = new MAILFROM((Object) message);
                 String adress = mailFromMessage.getAddress();
                 //TODO : Pass adress to states that need it.
                 setNextState(new StateWaitRCPT());
                 setMsgToSend(SMTPMessage.OK.toString());
                 return true;
-            } catch (MalformedEmailException e) {
+            } catch (MalformedMessageException e) {
                 e.printStackTrace();
             }
         } else {
