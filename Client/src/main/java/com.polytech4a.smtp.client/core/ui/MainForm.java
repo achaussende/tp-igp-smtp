@@ -149,7 +149,7 @@ public class MainForm extends JFrame implements Observer {
         tfFROM.setText("aaaaaa@aaaaa.com");
         panelMain.add(tfFROM, cc.xy(3, 3, CellConstraints.FILL, CellConstraints.DEFAULT));
         tfTO = new JTextField();
-        tfTO.setText("antoine@localhost.com;adrien@localhost.com;antoine@laposte.net;pierre@gmail.com");
+        tfTO.setText("antoine@localhost.com;");
         panelMain.add(tfTO, cc.xy(3, 5, CellConstraints.FILL, CellConstraints.DEFAULT));
         lbTO = new JLabel();
         lbTO.setText("TO : ");

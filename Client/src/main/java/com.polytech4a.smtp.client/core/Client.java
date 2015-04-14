@@ -20,7 +20,7 @@ public class Client extends Observable implements Runnable {
 
     private Mail mailToSend;
 
-    private static final int PORT=300;
+    private static final int PORT=500;
 
     private List<Connection> connections = new LinkedList<Connection>();
 
