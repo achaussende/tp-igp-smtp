@@ -54,13 +54,16 @@ public abstract class User {
         }
     }
 
-    /**
-     * Getter of the User's mail list
-     *
-     * @return User's login
-     */
     public String getLogin() {
         return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     /**
@@ -104,7 +107,7 @@ public abstract class User {
                 } catch (FileNotFoundException e) {
                     throw new MalFormedMailException("User.initMails : File in '" + path + "' not found");
                 } catch (MalFormedMailException ex) {
-                    System.out.println("WARNING User.initMails : The file " + folder + "/" + fileEntry.getName() + " is not a valid email");
+                    System.out.println("WARNING User.initMails : The file " + folder + "\\" + fileEntry.getName() + " is not a valid email");
                 }
             }
         return mails;
