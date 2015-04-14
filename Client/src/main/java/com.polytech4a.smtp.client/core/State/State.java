@@ -81,11 +81,18 @@ public abstract class State {
     }
 
     /**
-     * Blank constructor.
+     * Constructor with Mail parameter.
      */
     public State(Mail mailToSend) {
         this.mailToSend = mailToSend;
         this.nbTry = 0;
+    }
+
+    /**
+     * Blank constructor.
+     */
+    public State() {
+
     }
 
     /**
