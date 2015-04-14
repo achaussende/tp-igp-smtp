@@ -36,7 +36,6 @@ public class StateRcpt extends State {
             }
             if((indexReceivers == this.mailToSend.getReceivers().size()) && oneValid){
                 this.setNextState(new StateData(this.mailToSend));
-                        this.setNextState(new StateRcpt(this.mailToSend));
                 this.setMsgToSend(SMTPMessage.DATA.toString());
                 return true;
             }
