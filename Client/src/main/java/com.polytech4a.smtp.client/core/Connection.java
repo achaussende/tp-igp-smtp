@@ -87,7 +87,7 @@ public class Connection {
      * Send the message to the server through the created streams
      */
     private void sendMessage(){
-        logger.info("Send: " + currentState.getMsgToSend());
+        logger.info("Client : " + currentState.getMsgToSend());
         try {
             this.out.write(currentState.getMsgToSend().getBytes());
             this.out.flush();
