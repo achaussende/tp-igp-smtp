@@ -40,6 +40,7 @@ public class StateEhloConfirm extends State {
             } else {
                 this.setMsgToSend(SMTPMessage.QUIT.toString());
                 this.setNextState(new StateQuit(mailToSend));
+                return true;
             }
         }
         return false;
