@@ -10,18 +10,19 @@ public class StateData extends State {
 
     public StateData(Mail mailToSend) {
         super(mailToSend);
-        this.setNextState(this);
-        this.setMsgToSend(this.mailToSend.getMailToSend());
     }
 
     @Override
     public boolean analyze(String message) {
         if(message == null){
             incrementNbTry();
-            return false;
+            this.setMsgToSend(SMTPMessage.QUIT.toString());
+            this.setNextState(new StateQuit(mailToSend));
+            return true;
         }
 
         if(SMTPMessage.matches(SMTPMessage.START_MAIL_INPUT, message)){
+            this.setMsgToSend(this.mailToSend.getMailToSend());
             this.setNextState(new StateDataConfirm(mailToSend));
             return true;
         }

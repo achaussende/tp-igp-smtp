@@ -19,9 +19,11 @@ public class StateStarted extends State {
     @Override
     public boolean analyze(String message) {
         String serverName;
-        if(message == null){
+        if(message == null || !ServerReady.matches(message)){
             incrementNbTry();
-            return false;
+            setNextState(new StateQuit(mailToSend));
+            setMsgToSend(SMTPMessage.QUIT.toString());
+            return true;
         }
 
         if(ServerReady.matches(message)) {
@@ -32,10 +34,7 @@ public class StateStarted extends State {
                 setMsgToSend(new EHLO("Unknown").toString());
             }
             return true;
-        } else {
-            setNextState(new StateQuit(mailToSend));
-            setMsgToSend(SMTPMessage.QUIT.toString());
-            return true;
         }
+        return false;
     }
 }

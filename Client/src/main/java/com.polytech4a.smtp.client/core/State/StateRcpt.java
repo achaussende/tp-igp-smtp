@@ -25,12 +25,16 @@ public class StateRcpt extends State {
      */
     @Override
     public boolean analyze(String message) {
-        if(message == null){
-            incrementNbTry();
+        if(message == null || !(SMTPMessage.matches(SMTPMessage.OK, message) || SMTPMessage.matches(SMTPMessage.NO_SUCH_USER, message))){
+            if(SMTPMessage.matches(SMTPMessage.BAD_SEQUENCE_OF_COMMANDS, message)) {
+                this.setMsgToSend(SMTPMessage.QUIT.toString());
+                this.setNextState(new StateQuit(mailToSend));
+                return true;
+            }
             return false;
         }
 
-        if(SMTPMessage.matches(SMTPMessage.OK, message) || SMTPMessage.matches(SMTPMessage.NO_SUCH_USER, message)){
+        else{
             if(!oneValid && SMTPMessage.matches(SMTPMessage.OK, message)){
                 oneValid = true;
             }
@@ -54,6 +58,5 @@ public class StateRcpt extends State {
                 }
             }
         }
-        return false;
     }
 }

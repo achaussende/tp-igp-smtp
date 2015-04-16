@@ -9,18 +9,19 @@ import com.polytech4a.smtp.messages.SMTPMessage;
 public class StateDataConfirm extends State {
     public StateDataConfirm(Mail mailToSend) {
         super(mailToSend);
-        this.setNextState(this);
-        this.setMsgToSend(SMTPMessage.QUIT.toString());
     }
 
     @Override
     public boolean analyze(String message) {
         if(message == null){
             incrementNbTry();
-            return false;
+            this.setMsgToSend(SMTPMessage.QUIT.toString());
+            this.setNextState(new StateQuit(mailToSend));
+            return true;
         }
 
         if(SMTPMessage.matches(SMTPMessage.OK, message)){
+            this.setMsgToSend(SMTPMessage.QUIT.toString());
             this.setNextState(new StateQuit(mailToSend));
             return true;
         }
