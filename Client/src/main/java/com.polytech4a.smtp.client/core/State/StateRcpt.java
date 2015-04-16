@@ -11,7 +11,7 @@ import com.polytech4a.smtp.messages.textheader.client.RCPTTO;
 public class StateRcpt extends State {
     private boolean oneValid = false;
 
-    //Le premier a déjà été envoyé lors de la transition entre l'état précédent et celui-ci
+    //Le premier a dï¿½jï¿½ ï¿½tï¿½ envoyï¿½ lors de la transition entre l'ï¿½tat prï¿½cï¿½dent et celui-ci
     private int indexReceivers = 1;
 
 
@@ -46,7 +46,7 @@ public class StateRcpt extends State {
             }
             else{
                 try {
-                    this.setMsgToSend(new RCPTTO(this.mailToSend.getReceivers().get(indexReceivers)).getHeader());
+                    this.setMsgToSend(new RCPTTO(this.mailToSend.getReceivers().get(indexReceivers)).toString());
                     indexReceivers++;
                     return true;
                 } catch (MalformedEmailException e) {

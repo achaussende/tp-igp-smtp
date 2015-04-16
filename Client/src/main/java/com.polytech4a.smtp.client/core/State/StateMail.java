@@ -23,6 +23,14 @@ public class StateMail extends State{
     @Override
     public boolean analyze(String message) {
         if(message == null && !SMTPMessage.matches(SMTPMessage.OK, message)){
+            if(SMTPMessage.matches(SMTPMessage.BAD_SEQUENCE_OF_COMMANDS, message)) {
+                this.setMsgToSend(SMTPMessage.QUIT.toString());
+                this.setNextState(new StateQuit(mailToSend));
+                return true;
+            }
+            return false;
+        }else{
+
             try {
                 this.setMsgToSend(new RCPTTO(mailToSend.getReceivers().get(0)).toString());
                 this.setNextState(new StateRcpt(mailToSend));
@@ -30,13 +38,6 @@ public class StateMail extends State{
                 logger.error(e);
             }
             return true;
-        }else{
-            if(SMTPMessage.matches(SMTPMessage.BAD_SEQUENCE_OF_COMMANDS, message)){
-                this.setMsgToSend(SMTPMessage.QUIT.toString());
-                this.setNextState(new StateQuit(mailToSend));
-                return true;
-            }
         }
-        return false;
     }
 }

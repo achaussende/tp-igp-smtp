@@ -12,7 +12,7 @@ import com.polytech4a.smtp.messages.numberheader.server.SigningOff;
  */
 public class StateQuit extends State{
     /**
-     * Construxtor with the mail to send.
+     * Constructor with the mail to send.
      *
      * @param mailToSend Mail to send to server.
      */
@@ -28,6 +28,7 @@ public class StateQuit extends State{
     @Override
     public boolean analyze(String message) {
         this.setMsgToSend("");
+        this.setNextState(this);
         return false;
     }
 }
