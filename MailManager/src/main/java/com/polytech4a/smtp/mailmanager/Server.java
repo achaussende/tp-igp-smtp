@@ -2,7 +2,8 @@ package com.polytech4a.smtp.mailmanager;
 
 import com.polytech4a.smtp.mailmanager.exceptions.MailManagerException;
 import com.polytech4a.smtp.mailmanager.exceptions.MalFormedMailException;
-import com.polytech4a.smtp.mailmanager.user.User;
+import com.polytech4a.smtp.mailmanager.exceptions.UnknownUserException;
+import com.polytech4a.smtp.mailmanager.mail.Mail;
 import com.polytech4a.smtp.mailmanager.user.UserServer;
 
 import java.io.*;
@@ -33,20 +34,20 @@ public class Server extends MailManager {
         try {
             if (userFolder.exists() && !userMailFolder.exists()) {
                 if (!(userMailFolder.mkdir() && userLoginsFile.createNewFile())) {
-                    throw new MailManagerException("MailManager.initDirectory : Could not init directories at " + path);
+                    throw new MailManagerException("Server.initDirectory : Could not init directories at " + path);
                 }
             } else if (userFolder.exists() && userMailFolder.exists()) {
                 if (!userLoginsFile.exists() && !userLoginsFile.createNewFile()) {
-                    throw new MailManagerException("MailManager.initDirectory : Could not init directories at " + path);
+                    throw new MailManagerException("Server.initDirectory : Could not init directories at " + path);
                 }
             } else if (!userFolder.exists())
                 if (!(userFolder.mkdirs() && userMailFolder.mkdir() && userLoginsFile.createNewFile())) {
-                    throw new MailManagerException("MailManager.initDirectory : Could not init directories at " + path);
+                    throw new MailManagerException("Server.initDirectory : Could not init directories at " + path);
                 }
         } catch (SecurityException se) {
-            throw new MailManagerException("MailManager.initDirectory : Could not create folders at " + path);
+            throw new MailManagerException("Server.initDirectory : Could not create folders at " + path);
         } catch (IOException e) {
-            throw new MailManagerException("MailManager.initDirectory : Could not create logins.txt at " + path + "Server_mails/");
+            throw new MailManagerException("Server.initDirectory : Could not create logins.txt at " + path + "Server_mails/");
         }
         path += "Server_mails/";
     }
@@ -72,35 +73,103 @@ public class Server extends MailManager {
             br.close();
             return users;
         } catch (IOException e) {
-            throw new MailManagerException("MailManager.getUsers : Can't open file : " + path + "logins.txt");
+            throw new MailManagerException("Server.getUsers : Can't open file : " + path + "logins.txt");
         } catch (MailManagerException e) {
             throw e;
         }
     }
 
     /**
-     * Constructor of ServerMailManager
+     * Constructor of Server
      */
-    public Server(String path) throws MailManagerException {
+    protected Server(String path) throws MailManagerException {
         super(path);
         this.users = initUsers();
     }
 
     /**
-     * Get user's mails
+     * Constructor of Server without initialization of users and directories
+     */
+    protected ArrayList<UserServer> getUsers() {
+        return users;
+    }
+
+    /**
+     * Try to find an user who match the login
+     *
+     * @param login    : String of the user's login
+     * @return Boolean : true if an user match.
+     */
+    protected boolean existsUser(String login) {
+        for (UserServer u : users) {
+            if (u.getLogin().equals(login)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Try to find an user who match the login and the password
      *
      * @param login    : String of the user's login
      * @param password : String of the user's password
-     * @return Initialized user.
+     * @return Boolean : true if an user match.
      */
-    public UserServer getUser(String login, String password) {
+    protected boolean existsUser(String login, String password) {
         for (UserServer u : users) {
             if (u.getLogin().equals(login) && u.getPassword().equals(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Try to find an user who match the login and password
+     *
+     * @param login    : String of the user's login
+     * @param password : String of the user's password
+     * @return Initialized user or null if the user does not exist.
+     */
+    protected UserServer getUser(String login, String password) throws MailManagerException {
+        for (UserServer u : users) {
+            if (u.getLogin().equals(login) && u.getPassword().equals(password)) {
+                /*if (u.isLocked()){
+                    throw new MailManagerException("Server.getUser : couldn't get user " + login + " : the user is locked");
+                }*/
                 try {
+                    //u.lockUser();
                     u.initMails();
+                    //u.unlockUser();
                     return u;
-                } catch (MalFormedMailException e) {
-                    System.out.println("MailManager.getUserMails : couldn't get user " + u.getLogin() + " mails : " + e.getMessage());
+                } catch (MailManagerException e) {
+                    throw new MailManagerException("Server.getUser : couldn't get user " + login + " mails :\n" + e.getMessage());
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Try to find an user who match the login
+     *
+     * @param login    : String of the user's login
+     * @return Initialized user or null if the user does not exist.
+     */
+    protected UserServer getUser(String login) throws MailManagerException {
+        for (UserServer u : users) {
+            if (u.getLogin().equals(login)) {
+                /*if (u.isLocked()){
+                    throw new MailManagerException("Server.getUser : couldn't get user " + login + " : the user is locked");
+                }*/
+                try {
+                    //u.lockUser();
+                    u.initMails();
+                    //u.unlockUser();
+                    return u;
+                } catch (MailManagerException e) {
+                    throw new MailManagerException("Server.getUser : couldn't get user " + login + " mails :\n" + e.getMessage());
                 }
             }
         }
@@ -110,41 +179,47 @@ public class Server extends MailManager {
     /**
      * Save user into logins.txt
      *
-     * @param user User to save
+     * @param login : Address mail of the user
+     * @param password : Password of the user
      * @throws MailManagerException
      */
-    public void saveUser(UserServer user) throws MailManagerException {
-        try {
-            FileWriter file = new FileWriter(path + "/logins.txt", true);
-            file.write(user.getLogin() + " " + user.getPassword() + "\n");
-            file.close();
-            users.add(user);
-        } catch (IOException e) {
-            throw new MailManagerException("MailManagerServer.saveMails : can't open/write in " + path + "/logins.txt");
+    protected void saveUser(String login, String password) throws MailManagerException {
+        UserServer user = new UserServer(login, password, path);
+        if (getUser(user.getLogin(), user.getPassword()) == null) {
+            try {
+                FileWriter file = new FileWriter(path + "/logins.txt", true);
+                file.write(user.getLogin() + " " + user.getPassword() + "\n");
+                file.close();
+                users.add(user);
+            } catch (IOException e) {
+                throw new MailManagerException("Server.saveMails : can't open/write in " + path + "/logins.txt");
+            }
         }
     }
 
     /**
-     * Save user's mails and add him into logins.txt if necessary
+     * Check if the input string is a valid mail to save it
      *
-     * @param user user to save
+     * @param input String : mail to test
      * @throws MailManagerException
      */
-    @Override
-    public void saveMails(User user) throws MailManagerException {
-        if (user instanceof UserServer) {
-            UserServer user2 = (UserServer) user;
-            user2.saveMails();
-            if (getUser(user2.getLogin(), user2.getPassword()) == null) {
-                saveUser(user2);
-            }
-        } else {
-            throw new MailManagerException("MailManagerServer.saveMail : user must be an UserServer");
+    protected void saveMail(String input) throws MailManagerException, MalFormedMailException, UnknownUserException {
+        String receiver;
+        Mail mail;
+        try {
+            mail = new Mail(input);
+            receiver = mail.getReceiver();
+        } catch (MalFormedMailException e) {
+            throw new MalFormedMailException("Server.saveMail : the input is not a mail :\n" + e.getMessage());
         }
 
-    }
-
-    public ArrayList<UserServer> getUsers() {
-        return users;
+        for (UserServer u : users) {
+            if (u.getLogin().equals(receiver)) {
+                u.addMail(mail);
+                u.saveMails();
+                return;
+            }
+        }
+        throw new UnknownUserException("Server.saveMail : The user " + receiver + " does not exist");
     }
 }

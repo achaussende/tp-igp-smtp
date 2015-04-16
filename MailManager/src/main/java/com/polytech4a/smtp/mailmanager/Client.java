@@ -1,6 +1,7 @@
 package com.polytech4a.smtp.mailmanager;
 
 import com.polytech4a.smtp.mailmanager.exceptions.MailManagerException;
+import com.polytech4a.smtp.mailmanager.exceptions.MalFormedMailException;
 import com.polytech4a.smtp.mailmanager.user.UserClient;
 
 import java.io.File;
@@ -22,9 +23,14 @@ public class Client extends MailManager {
      * @param login : String login of the user
      * @param path  : String path of the user's directory
      */
-    public Client(String login, String path) throws MailManagerException {
+    protected Client(String login, String path) throws MailManagerException {
         super(path);
         this.user = new UserClient(login, this.path);
+    }
+
+    protected Client(String login) {
+        super();
+        this.user = new UserClient(login);
     }
 
     /**
@@ -37,15 +43,15 @@ public class Client extends MailManager {
         try {
             if (userFolder.exists() && !userMailFolder.exists()) {
                 if (!(userMailFolder.mkdir())) {
-                    throw new MailManagerException("MailManager.initDirectory : Could not init directories at " + path);
+                    throw new MailManagerException("Client.initDirectory : Could not init directories at " + path);
                 }
             } else if (!userFolder.exists()) {
                 if (!(userFolder.mkdirs() && userMailFolder.mkdir())) {
-                    throw new MailManagerException("MailManager.initDirectory : Could not init directories at " + path);
+                    throw new MailManagerException("Client.initDirectory : Could not init directories at " + path);
                 }
             }
         } catch (SecurityException se) {
-            throw new MailManagerException("MailManager.initDirectory : Could not create folders at " + path);
+            throw new MailManagerException("Client.initDirectory : Could not create folders at " + path);
         }
         path += "Client_mails/";
     }
@@ -58,18 +64,19 @@ public class Client extends MailManager {
      * @param subject  : String content of the mail
      * @return String of the output of the created mail
      */
-    public String createMail(String receiver, String content, String subject) {
+    protected String createMail(String receiver, String content, String subject) throws MalFormedMailException {
         return user.createMail(receiver, content, subject);
     }
 
     /**
      * Check if a string is a valid mail to
      * add it to the client's mails List
+     * and save it in the output directory
      *
      * @param mail : String input to test
-     * @return true if the input is a valid mail
      */
-    public boolean addMail(String mail) {
-        return user.addMail(mail);
+    protected void addMail(String mail) throws MalFormedMailException, MailManagerException {
+        user.addMail(mail);
+        user.saveMails();
     }
 }

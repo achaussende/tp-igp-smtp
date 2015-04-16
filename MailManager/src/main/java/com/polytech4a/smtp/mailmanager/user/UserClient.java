@@ -9,4 +9,8 @@ public class UserClient extends User {
     public UserClient(String login, String path) throws MailManagerException {
         super(login, "", path);
     }
+
+    public UserClient(String login) {
+        super(login, "");
+    }
 }

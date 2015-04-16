@@ -1,5 +1,7 @@
 package com.polytech4a.smtp.mailmanager.mail;
 
+import com.polytech4a.smtp.mailmanager.exceptions.MalFormedMailException;
+
 /**
  * Created by Dimitri on 09/03/2015.
  */
@@ -9,7 +11,7 @@ public class ParameterReceiver extends Parameter {
      *
      * @param content : content of the parameter
      */
-    public ParameterReceiver(String content) {
+    protected ParameterReceiver(String content) throws MalFormedMailException {
         super(content, "TO:");
     }
 }

@@ -1,7 +1,6 @@
 package com.polytech4a.smtp.mailmanager;
 
 import com.polytech4a.smtp.mailmanager.exceptions.MailManagerException;
-import com.polytech4a.smtp.mailmanager.user.User;
 
 /**
  * Created by Dimitri on 03/03/2015.
@@ -31,9 +30,9 @@ public abstract class MailManager {
     }
 
     /**
-     * Save the client's mails
+     * Constructor of the MailManager without initialization of directories
      */
-    public void saveMails(User user) throws MailManagerException {
-        user.saveMails();
+    protected MailManager() {
+        this.path = "";
     }
 }

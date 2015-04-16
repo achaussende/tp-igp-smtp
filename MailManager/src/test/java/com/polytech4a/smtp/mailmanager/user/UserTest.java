@@ -41,9 +41,9 @@ public class UserTest {
     @Test
     public void testSaveMails() throws Exception {
         Calendar calendar = Calendar.getInstance();
-        assertEquals("Test Save Mail -> Add mail Server", true, userServer.addMail(mail.getOutput().toString()));
-        assertEquals("Test Save Mail -> Add mail Client", true, userClient.addMail(mail.getOutput().toString()));
-        assertEquals("Test Save Mail -> Add mail Client", true, userServer.addMail(mail2.getOutput().toString()));
+        userServer.addMail(mail.getOutput().toString());
+        userClient.addMail(mail.getOutput().toString());
+        userServer.addMail(mail2.getOutput().toString());
         userServer.saveMails();
         assertEquals("Test Save mails Server", true, new File(userServer.path).exists() && new File(userServer.path + "/mail_" + calendar.get(Calendar.DAY_OF_MONTH) + (calendar.get(Calendar.MONTH) + 1) + calendar.get(Calendar.YEAR) + "_0.txt").exists());
         userClient.saveMails();

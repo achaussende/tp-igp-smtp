@@ -55,6 +55,13 @@ public abstract class User {
         }
     }
 
+    public User(String login, String password) {
+        this.login = login;
+        this.password = password;
+        this.path = "";
+        this.mails = new ArrayList<Mail>();
+    }
+
     public String getLogin() {
         return login;
     }
@@ -67,29 +74,38 @@ public abstract class User {
         return path;
     }
 
+    public ArrayList<Mail> getMails() {
+        return mails;
+    }
+
+    /**
+     * Add a mail to the user's mail list
+     *
+     * @param mail Mail to add
+     */
+    public void addMail(Mail mail) {
+        mails.add(mail);
+    }
+
     /**
      * Check if a string is a valid pop3 mail to add it
      * to the User's list
      *
      * @param content : String to test
-     * @return true if the string is a valid pop3 mail
      */
-    public boolean addMail(String content) {
+    public void addMail(String content) throws MalFormedMailException {
         try {
             Mail mail = new Mail(content);
             mails.add(mail);
-            return true;
         } catch (MalFormedMailException e) {
-            System.out.println("User.addMail : Can't add Mail : " + e.getMessage());
-            return false;
+            throw new MalFormedMailException("User.addMail : Can't add Mail :\n" + e.getMessage());
         }
-
     }
 
     /**
      * Get the User's mails in its directory
      */
-    public ArrayList<Mail> initMails() throws MalFormedMailException {
+    public ArrayList<Mail> initMails() throws MailManagerException {
         File folder = new File(path);
         Scanner scan;
         mails = new ArrayList<Mail>();
@@ -106,7 +122,7 @@ public abstract class User {
                     Mail mail = new Mail(input.toString());
                     mails.add(mail);
                 } catch (FileNotFoundException e) {
-                    throw new MalFormedMailException("User.initMails : File in '" + path + "' not found");
+                    throw new MailManagerException("User.initMails : File in '" + path + "' not found");
                 } catch (MalFormedMailException ex) {
                     System.out.println("WARNING User.initMails : The file " + folder + "\\" + fileEntry.getName() + " is not a valid email");
                 }
@@ -122,8 +138,8 @@ public abstract class User {
      * @param subject  : String of the subject of the mail
      * @return mail created
      */
-    public String createMail(String receiver, String content, String subject) {
-        Mail mail = new Mail(this.login, receiver, content, subject);
+    public String createMail(String receiver, String content, String subject) throws MalFormedMailException {
+        Mail mail = new Mail(receiver, this.login, content, subject);
         return mail.getOutput().toString();
     }
 

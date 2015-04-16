@@ -31,7 +31,7 @@ public class Header {
      * @param sender   : String sender of the mail
      * @param subject  : String subject of the mail
      */
-    public Header(String receiver, String sender, String subject) {
+    protected Header(String receiver, String sender, String subject) throws MalFormedMailException {
         this.parameters = new ArrayList<Parameter>();
         this.parameters.add(new ParameterReceiver(receiver));
         this.parameters.add(new ParameterSender(sender));
@@ -49,7 +49,7 @@ public class Header {
      * @param input : String to initialize the header with
      * @throws MalFormedMailException
      */
-    public Header(String input) throws MalFormedMailException {
+    protected Header(String input) throws MalFormedMailException {
         this.parameters = new ArrayList<Parameter>();
         this.parameters.add(new ParameterReceiver(""));
         this.parameters.add(new ParameterSender(""));
@@ -58,8 +58,12 @@ public class Header {
         this.output = new StringBuffer(input);
         for (Parameter param : parameters) {
             if (!param.parseParameter(input))
-                throw new MalFormedMailException("Header.Header(" + input + "): The input string does not match the mail format for " + param.getClass().toString());
+                throw new MalFormedMailException("Header.Header : The input string does not match the mail format for " + param.getClass().toString());
         }
+    }
+
+    protected String getReceiver() {
+        return parameters.get(0).content;
     }
 
     /**
@@ -67,7 +71,7 @@ public class Header {
      *
      * @return StringBuffer : header built
      */
-    public StringBuffer buildHeader() {
+    protected StringBuffer buildHeader() {
         output = new StringBuffer();
         for (Parameter param : parameters) {
             output.append(param.buildParameter());

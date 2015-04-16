@@ -22,8 +22,8 @@ public class Mail extends Parameter {
      */
     private StringBuffer output;
 
-    public Header getHeader() {
-        return header;
+    public String getReceiver() {
+        return header.getReceiver();
     }
 
     public StringBuffer getOutput() {
@@ -38,7 +38,7 @@ public class Mail extends Parameter {
      * @param content  : String content of the mail
      * @param subject  : String subject of the mail
      */
-    public Mail(String receiver, String sender, String content, String subject) {
+    public Mail(String receiver, String sender, String content, String subject) throws MalFormedMailException {
         super(content, Parameter.END_LINE + Parameter.END_LINE);
         this.header = new Header(receiver, sender, subject);
         this.output = new StringBuffer();

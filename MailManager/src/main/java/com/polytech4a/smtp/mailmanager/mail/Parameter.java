@@ -1,5 +1,7 @@
 package com.polytech4a.smtp.mailmanager.mail;
 
+import com.polytech4a.smtp.mailmanager.exceptions.MalFormedMailException;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,7 +36,9 @@ public abstract class Parameter {
      * @param content : content of the parameter
      * @param parser  : parser of the parameter
      */
-    public Parameter(String content, String parser) {
+    protected Parameter(String content, String parser) throws MalFormedMailException {
+        if (content == null)
+            throw new MalFormedMailException("MailParameter " + this.getClass().toString() + " must not be empty");
         this.content = content;
         this.parser = parser;
     }
@@ -46,7 +50,7 @@ public abstract class Parameter {
      * @param output : String to test
      * @return boolean : true if the string match the parser's parameter
      */
-    public boolean parseParameter(String output) {
+    protected boolean parseParameter(String output) {
         String tamp;
         if (output != null) {
             // Text to catch matches : parser text_to_catch \t\n
@@ -76,7 +80,7 @@ public abstract class Parameter {
      *
      * @return StringBuffer : parameter built
      */
-    public StringBuffer buildParameter() {
+    protected StringBuffer buildParameter() {
         StringBuffer output = new StringBuffer(parser);
         output.append(parseLine(content));
         return output;
@@ -88,7 +92,7 @@ public abstract class Parameter {
      * @param line : String to test
      * @return boolean : true if the line match the max number of characters
      */
-    public boolean checkLineLength(String line) {
+    protected boolean checkLineLength(String line) {
         return line.length() <= MAX_LINE_LENGTH;
     }
 
@@ -98,7 +102,7 @@ public abstract class Parameter {
      * @param line : String to parse
      * @return StringBuffer : line parsed
      */
-    public StringBuffer parseLine(String line) {
+    protected StringBuffer parseLine(String line) {
         int i = 0;
         StringBuffer res = new StringBuffer();
         while (!checkLineLength(line.substring(i))) {
