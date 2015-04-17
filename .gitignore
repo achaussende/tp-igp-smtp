@@ -12,6 +12,7 @@ Server_Log/
 Client_Log/
 Client_mails/
 mails/
+OUTPUT/
 
 # Mac
 .DS_Store
