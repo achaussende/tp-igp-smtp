@@ -46,7 +46,7 @@ public class MailManagerTest {
                 " with the constant\t\nSUBJECT:test_subject\t\nORIG-DATE:Tue Apr 14 17:22:35 CEST 2015\t\n\t\n" +
                 "This is an email content test with an email incredibly long but I have no\t\n" +
                 " more ideas to lengthen so I'll just add random words. Hoover, Pineapple,\t\n" +
-                " Chameleon, Zephyr.\nThank you for your attention.\nBest Regards,\n\nPatrick Henry\t\n\t\n";
+                " Chameleon, Zephyr.\nThank you for your attention.\nBest Regards,\n\nPatrick Henry\t\n\t\n\n.\n";
 
         server.saveMail(mail);
     }

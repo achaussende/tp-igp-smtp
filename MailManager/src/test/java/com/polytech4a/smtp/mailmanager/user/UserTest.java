@@ -29,7 +29,6 @@ public class UserTest {
                         "Best Regards,\n" +
                         "\n" +
                         "Patrick Henry";
-        Date date = new Date();
 
         this.mail = new Mail(receiver, sender,
                 content, subject);

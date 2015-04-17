@@ -13,7 +13,7 @@ public abstract class Parameter {
     /**
      * linefeed for POP3 mails
      */
-    protected static final String END_LINE = "\t" + "\n";
+    protected static final String END_LINE = "\t\n";
 
     /**
      * Constant for the max number of characters per line

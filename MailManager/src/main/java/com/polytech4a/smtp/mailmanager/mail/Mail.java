@@ -17,6 +17,10 @@ public class Mail extends Parameter {
      */
     private Header header;
 
+    protected static final String END_MAIL_PARSER="\\n\\.\\n";
+
+    protected static final String END_MAIL="\n.\n";
+
     /**
      * String that contains the mail that will be send.
      */
@@ -69,6 +73,7 @@ public class Mail extends Parameter {
         output = new StringBuffer(header.buildHeader());
         output.append(parseLine(content));
         output.append(Parameter.END_LINE);
+        output.append(END_MAIL);
         return output;
     }
 
@@ -78,8 +83,9 @@ public class Mail extends Parameter {
     @Override
     public boolean parseParameter(String output) {
         String[] tamp;
-        if (output.contains(parser)) {
-            tamp = output.split(parser);
+        if (output.contains(END_MAIL)&&output.contains(parser)) {
+            tamp = output.split(END_MAIL_PARSER);
+            tamp = tamp[0].split(parser);
             try {
                 header = new Header(tamp[0] + Parameter.END_LINE);
             } catch (MalFormedMailException ex) {

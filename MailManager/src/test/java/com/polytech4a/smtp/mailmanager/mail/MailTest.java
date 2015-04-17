@@ -39,6 +39,7 @@ public class MailTest {
                 + " Chameleon, Zephyr.\nThank you for your attention.\nBest Regards,\n\nPatrick Henry");
         this.expectedOutput.append(Parameter.END_LINE);
         this.expectedOutput.append(Parameter.END_LINE);
+        this.expectedOutput.append(Mail.END_MAIL);
     }
 
     @Test
