@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * @author Adrien CHAUSSENDE
  * @version 1.0
  *          <p>
- *          "Waiting end of connection" state for the SMPT Server.
+ *          "Waiting end of connection" state for the SMTP Server.
  */
 public class StateWaitEnd extends State {
     @Override
@@ -34,8 +34,8 @@ public class StateWaitEnd extends State {
             }
         } else {
             setMsgToSend(SMTPMessage.BAD_SEQUENCE_OF_COMMANDS.toString());
-            setNextState(new StateInit());
-            return false;
+            setNextState(new StateWaitEnd());
+            return true;
         }
         return false;
     }
