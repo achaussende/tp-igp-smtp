@@ -94,6 +94,20 @@ public class FacadeServer {
     }
 
     /**
+     * Check if the input string is a mail and save it if the receiver exists
+     *
+     * @param mail : mail to save
+     * @param path : directory where the Server users' directories are
+     * @param receiver : user which will keep the mail
+     * @throws MailManagerException   : Errors with directories during initialisation
+     * @throws MalFormedMailException : The mail is not a valid mail
+     * @throws UnknownUserException   : The receiver of the mail is unknown by the server
+     */
+    public static void saveMail(String mail, String path, String receiver) throws MailManagerException, MalFormedMailException, UnknownUserException {
+        new Server(path).saveMail(mail, receiver);
+    }
+
+    /**
      * Check if the user is already known by the server and save it if not
      *
      * @param login    : address mail of the user
