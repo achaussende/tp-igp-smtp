@@ -61,7 +61,7 @@ public class StateWaitRCPT extends State {
             //If usr is valid
             if (toUsers != null && toUsers.size() > 0) {
                 setMsgToSend(SMTPMessage.START_MAIL_INPUT.toString());
-                setNextState(new StateReception());
+                setNextState(new StateReception(toUsers));
                 return true;
             } else {
                 setMsgToSend(SMTPMessage.BAD_SEQUENCE_OF_COMMANDS.toString());
