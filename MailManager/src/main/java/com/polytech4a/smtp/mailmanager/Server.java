@@ -203,6 +203,30 @@ public class Server extends MailManager {
      * @param input String : mail to test
      * @throws MailManagerException
      */
+    protected void saveMail(String input, String receiver) throws MailManagerException, MalFormedMailException, UnknownUserException {
+        Mail mail;
+        try {
+            mail = new Mail(input);
+        } catch (MalFormedMailException e) {
+            throw new MalFormedMailException("Server.saveMail : the input is not a mail :\n" + e.getMessage());
+        }
+
+        for (UserServer u : users) {
+            if (u.getLogin().equals(receiver)) {
+                u.addMail(mail);
+                u.saveMails();
+                return;
+            }
+        }
+        throw new UnknownUserException("Server.saveMail : The user " + receiver + " does not exist");
+    }
+
+    /**
+     * Check if the input string is a valid mail and if the receiver is known to save it
+     *
+     * @param input String : mail to test
+     * @throws MailManagerException
+     */
     protected void saveMail(String input) throws MailManagerException, MalFormedMailException, UnknownUserException {
         String receiver;
         Mail mail;
