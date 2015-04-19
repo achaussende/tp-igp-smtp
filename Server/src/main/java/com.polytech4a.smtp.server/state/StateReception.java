@@ -7,6 +7,8 @@ import com.polytech4a.smtp.mailmanager.exceptions.UnknownUserException;
 import com.polytech4a.smtp.messages.SMTPMessage;
 import com.polytech4a.smtp.server.Server;
 
+import java.util.ArrayList;
+
 /**
  * Created by Adrien CHAUSSENDE on 01/04/2015.
  *
@@ -17,6 +19,12 @@ import com.polytech4a.smtp.server.Server;
  */
 public class StateReception extends State {
 
+    private ArrayList<String> toUsers;
+
+    public StateReception(ArrayList<String> toUsers) {
+        this.toUsers = toUsers;
+    }
+
     @Override
     public boolean analyze(String message) {
         boolean keepConnection = handleQuit(message);
@@ -24,19 +32,21 @@ public class StateReception extends State {
             return keepConnection;
         //Maybe need to test if their are the 5 end mail's char.
             try {
-                FacadeServer.saveMail(message, Server.MAIL_DIRECTORY);
+                for(String toUser : toUsers) {
+                    FacadeServer.saveMail(message, Server.MAIL_DIRECTORY, toUser);
+                }
             } catch (MailManagerException e) {
                 //TODO : Handle this.
                 e.printStackTrace();
             } catch (MalFormedMailException e) {
                 logger.error(e.getMessage());
                 setMsgToSend(SMTPMessage.BAD_SEQUENCE_OF_COMMANDS.toString());
-                setNextState(new StateReception());
+                setNextState(new StateReception(toUsers));
                 return true;
             } catch (UnknownUserException e) {
                 logger.error(e.getMessage());
                 setMsgToSend(SMTPMessage.NO_SUCH_USER.toString());
-                setNextState(new StateReception());
+                setNextState(new StateReception(toUsers));
                 return true;
             }
         setNextState(new StateWaitEnd());
