@@ -23,16 +23,21 @@ public class StateReception extends State {
         if (!keepConnection)
             return keepConnection;
         //Maybe need to test if their are the 5 end mail's char.
-        boolean malformedMail = false;
             try {
                 FacadeServer.saveMail(message, Server.MAIL_DIRECTORY);
             } catch (MailManagerException e) {
+                //TODO : Handle this.
                 e.printStackTrace();
             } catch (MalFormedMailException e) {
                 logger.error(e.getMessage());
-
+                setMsgToSend(SMTPMessage.BAD_SEQUENCE_OF_COMMANDS.toString());
+                setNextState(new StateReception());
+                return true;
             } catch (UnknownUserException e) {
                 logger.error(e.getMessage());
+                setMsgToSend(SMTPMessage.NO_SUCH_USER.toString());
+                setNextState(new StateReception());
+                return true;
             }
         setNextState(new StateWaitEnd());
         setMsgToSend(SMTPMessage.OK.toString());
