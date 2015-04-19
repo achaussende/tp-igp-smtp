@@ -39,9 +39,9 @@ public class MainForm extends JFrame implements Observer {
     /**
      * Regex for Mail.
      */
-    private final static String mailRegex = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}";
+    private final static String mailRegex = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9]+";
 
-    private final static String mailsListRegex = "([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4};?)*";
+    private final static String mailsListRegex = "([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9]+;?)*";
 
 
     /**

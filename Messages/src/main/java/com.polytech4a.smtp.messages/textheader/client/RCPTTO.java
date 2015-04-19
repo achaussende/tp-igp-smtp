@@ -17,12 +17,12 @@ public class RCPTTO extends TextHeaderMessage {
     /**
      * Regex of a RCPTTO Message.
      */
-    private static final String regex = "^RCPT TO:<[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}>$";
+    private static final String regex = "^RCPT TO:<[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9]+>$";
 
     /**
      * Regex for Mail.
      */
-    private final static String mailRegex = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}";
+    private final static String mailRegex = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9]+";
 
     /**
      * Address of the sender.
