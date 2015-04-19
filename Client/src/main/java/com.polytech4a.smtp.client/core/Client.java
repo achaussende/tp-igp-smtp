@@ -16,12 +16,9 @@ import java.util.Observable;
  */
 public class Client extends Observable implements Runnable {
 
-    private static Logger logger = Logger.getLogger(Main.class);
-
-    private Mail mailToSend;
-
     private static final int PORT=500;
-
+    private static Logger logger = Logger.getLogger(Main.class);
+    private Mail mailToSend;
     private List<Connection> connections = new LinkedList<Connection>();
 
     public Client() {
@@ -41,9 +38,10 @@ public class Client extends Observable implements Runnable {
     }
 
     private void initConnections() {
+        connections.clear();
         LinkedList<InetAddress> dest = new LinkedList<InetAddress>();
         for (String to : mailToSend.getReceivers()) {
-            String hostName = to.substring(to.indexOf("@")+1);
+            String hostName = to.substring(to.indexOf("@") + 1);
             if (hostName.contains("localhost")) hostName="localhost";
             try {
                 final InetAddress address = Inet4Address.getByName(hostName);
