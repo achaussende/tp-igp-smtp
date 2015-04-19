@@ -29,6 +29,10 @@ public class RCPTTO extends TextHeaderMessage {
      */
     private String address;
 
+    public String getAddress() {
+        return address;
+    }
+
     /**
      * Builder of a RCPTTO Message.
      *

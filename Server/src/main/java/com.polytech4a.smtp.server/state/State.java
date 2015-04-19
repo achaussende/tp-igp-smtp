@@ -1,5 +1,7 @@
 package com.polytech4a.smtp.server.state;
 
+import org.apache.log4j.Logger;
+
 import com.polytech4a.smtp.messages.SMTPMessage;
 import com.polytech4a.smtp.messages.numberheader.server.SigningOff;
 import com.polytech4a.smtp.server.Server;
@@ -9,10 +11,16 @@ import com.polytech4a.smtp.server.Server;
  *
  * @author Adrien CHAUSSENDE
  * @version 1.0
- *          <p/>
+ *          <p>
  *          State of the SMTP Server.
  */
 public abstract class State {
+
+    /**
+     * Logger
+     */
+    public static Logger logger = Logger.getLogger(State.class);
+
     /**
      * Next state in which the object will be.
      */
@@ -74,11 +82,12 @@ public abstract class State {
 
     /**
      * Handle reception of a Quit message. Return true if the connection can continue, false if not.
+     *
      * @param message Received message.
      * @return True if the connection can continue. False if the client disconnected.
      */
-    protected boolean handleQuit(String message){
-        if(SMTPMessage.matches(SMTPMessage.QUIT, message)) {
+    protected boolean handleQuit(String message) {
+        if (SMTPMessage.matches(SMTPMessage.QUIT, message)) {
             setMsgToSend(new SigningOff(Server.SERVER_NAME).toString());
             setNextState(new StateInit());
             return false;

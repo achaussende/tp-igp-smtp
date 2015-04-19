@@ -5,6 +5,8 @@ import com.polytech4a.smtp.messages.exceptions.MalformedEmailException;
 import com.polytech4a.smtp.messages.exceptions.MalformedMessageException;
 import com.polytech4a.smtp.messages.textheader.client.MAILFROM;
 
+import java.util.ArrayList;
+
 /**
  * Created by Adrien CHAUSSENDE on 01/04/2015.
  *
@@ -22,9 +24,7 @@ public class StateWaitMail extends State {
         if(MAILFROM.matches(message)) {
             try {
                 MAILFROM mailFromMessage = new MAILFROM((Object) message);
-                String adress = mailFromMessage.getAddress();
-                //TODO : Pass adress to states that need it.
-                setNextState(new StateWaitRCPT());
+                setNextState(new StateWaitRCPT(mailFromMessage.getAddress(), new ArrayList<String>()));
                 setMsgToSend(SMTPMessage.OK.toString());
                 return true;
             } catch (MalformedMessageException e) {

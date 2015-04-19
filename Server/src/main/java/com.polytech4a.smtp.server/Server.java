@@ -43,6 +43,11 @@ public class Server {
     private SSLServerSocket socket;
 
     /**
+     * Mail directory for the server.
+     */
+    public static String MAIL_DIRECTORY = "OUTPUT/Server/";
+
+    /**
      * Getter of server's socket.
      *
      * @return socket ServerSocket
