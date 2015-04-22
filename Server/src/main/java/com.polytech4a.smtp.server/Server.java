@@ -62,8 +62,7 @@ public class Server {
      * @param port          Server will listen on this port.
      * @param nbConnections Maximum number of connections allowed on the server.
      */
-    public Server(int port, int nbConnections, boolean delMessage) {
-        this.DEL_MESSAGE = delMessage;
+    public Server(int port, int nbConnections) {
         this.start(port, nbConnections);
     }
 

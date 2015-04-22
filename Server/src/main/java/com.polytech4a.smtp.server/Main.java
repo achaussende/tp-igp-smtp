@@ -22,11 +22,11 @@ public class Main {
     /**
      * Main function.
      *
-     * @param args arg0 = port, arg1 = nbConnection, arg2 = boolDeleteMsg
+     * @param args arg0 = port, arg1 = nbConnection
      */
     public static void main(String[] args) {
         defineLogger();
-        Server server = new Server(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Boolean.parseBoolean(args[2]));
+        Server server = new Server(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
         logger.info("SERVER STARTED");
         server.listen();
         server.close();
